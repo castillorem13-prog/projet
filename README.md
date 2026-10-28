@@ -33,7 +33,7 @@ git config --global user.email "ton-email@exemple.com"
 
 ```bash
 git clone https://github.com/castillorem13-prog/projet.git
-cd NOM-DU-DEPOT
+cd projet
 code .
 ```
 

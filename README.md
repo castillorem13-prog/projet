@@ -32,7 +32,7 @@ git config --global user.email "ton-email@exemple.com"
 **4. Récupérer le projet**
 
 ```bash
-git clone https://github.com/PSEUDO/NOM-DU-DEPOT.git
+git clone https://github.com/castillorem13-prog/projet.git
 cd NOM-DU-DEPOT
 code .
 ```

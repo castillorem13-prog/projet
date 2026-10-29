@@ -1,0 +1,45 @@
+learnward/
+├── CLAUDE.md                        # Instructions système & règles d'architecture (lu par Claude Code)
+├── docs/
+│   └── CONTEXT_PROMPT.md            # Résumé des contrats de données à coller dans ChatGPT
+├── public/
+│   └── manifest.json                # Configuration PWA mobile-first
+├── supabase/
+│   ├── config.toml
+│   ├── migrations/                  # Schéma SQL versionné (users, consents, point_ledger, etc.)
+│   ├── seed.sql                     # Notions officielles (4e/3e/2nde) et templates déterministes
+│   └── tests/                       # Tests pgTAP pour vérifier les règles RLS
+├── src/
+│   ├── app/                         # Frontend PWA & Routing (Next.js App Router)
+│   │   ├── (auth)/                  # Onboarding élève & validation parentale
+│   │   ├── (student)/               # Dashboard élève, lecteur d'exercices, catalogue
+│   │   ├── (parent)/                # Espace parent & gestion des consentements RGPD
+│   │   └── api/                     # Endpoints métier (validation Zod + appels aux domaines)
+│   │       ├── exercises/           # POST /api/exercises & GET /api/exercises/[id]
+│   │       ├── sessions/            # POST /api/sessions/[id]/answers & /complete
+│   │       ├── progress/            # GET /api/progress
+│   │       ├── rewards/             # GET /api/rewards
+│   │       └── parent/consents/     # POST /api/parent/consents
+│   ├── domains/                     # Cœur métier (100% serveur, indépendant de l'UI)
+│   │   ├── ai-adapter/              # Interface unique vers Gemini / OpenAI / Anthropic + suivi des coûts
+│   │   ├── pedagogy/                # Orchestrateur, templates d'exos et validation déterministe (maths/physique)
+│   │   ├── points/                  # Calcul serveur, idempotence et écriture append-only dans point_ledger
+│   │   ├── consents/                # Logique RGPD (minorité < 15 ans, versionning des textes)
+│   │   └── school-connector/        # (Isolé / Phase 4) Futur connecteur Pronote/ÉcoleDirecte désactivable
+│   ├── components/
+│   │   ├── ui/                      # Composants atomiques (shadcn/ui + Tailwind)
+│   │   ├── exercise-player/         # Interface interactive des séances (QCM, indices, explications)
+│   │   └── layout/                  # Navigation mobile-first PWA
+│   ├── lib/
+│   │   ├── supabase/                # Clients Supabase (Browser, Server, Service Role protégé)
+│   │   ├── schemas/                 # Contrats Zod partagés (LE pont entre Claude et ChatGPT)
+│   │   ├── security/                # Rate-limiting, clés d'idempotence, logs d'audit
+│   │   └── utils.ts
+│   └── types/
+│       └── database.types.ts        # Types générés automatiquement par Supabase CLI
+├── tests/
+│   ├── unit/                        # Tests Vitest (vérificateur mathématique, calcul des points)
+│   └── e2e/                         # Tests Playwright (parcours élève/parent)
+├── next.config.ts
+├── package.json
+└── tsconfig.json

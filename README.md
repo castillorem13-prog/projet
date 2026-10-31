@@ -1,6 +1,6 @@
-# Nom du projet
+# LearnWard
 
-> Courte description du projet.
+> LearnWard, c'est le WeWard des devoirs : une application qui transforme les révisions des jeunes en jeu pour les motiver. L'app récupère les devoirs et une IA réécrit les exercices dans l'univers de leurs passions (comme le foot) pour rendre l'apprentissage plus ludique. L'élève gagne des points en faisant des efforts et en étant régulier, points qu'il convertit en réductions financées par des marques partenaires. L'élève progresse en s'amusant et gagne du pouvoir d'achat, tandis que les marques soutiennent l'éducation de manière positive.
 
 
 

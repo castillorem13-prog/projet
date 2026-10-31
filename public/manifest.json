@@ -1,0 +1,13 @@
+{
+  "name": "LearnWard",
+  "short_name": "LearnWard",
+  "description": "Tes devoirs deviennent des séances de révision courtes et variées.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFD60A",
+  "theme_color": "#FFD60A",
+  "orientation": "any",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

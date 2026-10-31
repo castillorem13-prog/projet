@@ -1,0 +1,139 @@
+/* ——— Cagnotte ——— */
+.wallet-hero { padding: 22px; border-radius: 30px; background: var(--yellow); }
+.wallet-kicker { font-size: 15px; font-weight: 750; }
+.wallet-amount { margin: 4px 0 2px; font-family: var(--font-display); font-size: 64px; line-height: 0.95; font-weight: 900; font-stretch: 125%; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.wallet-points { font-size: 16px; font-weight: 650; color: var(--muted); }
+.wallet-line { display: flex; align-items: flex-start; gap: 8px; margin-top: 10px; padding: 8px 12px; border-radius: 14px; background: rgba(255, 255, 255, 0.55); font-size: 14px; line-height: 1.4; font-weight: 650; }
+.wallet-line svg { flex: none; margin-top: 2px; }
+.goal { display: grid; gap: 10px; margin-top: 16px; padding: 14px; border-radius: 20px; background: rgba(255, 255, 255, 0.62); }
+.goal-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 15px; font-weight: 750; }
+.goal-head > span { display: inline-flex; align-items: center; gap: 6px; }
+.goal-main { display: flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; color: inherit; text-align: left; }
+.goal-main > span:last-child { display: flex; flex-direction: column; }
+.goal-main strong { font-size: 18px; font-weight: 800; }
+.goal-main > span:last-child > span { font-size: 14px; font-weight: 600; }
+.goal-bar { display: block; height: 10px; overflow: hidden; border-radius: 999px; background: rgba(26, 20, 51, 0.14); }
+.goal-bar span { display: block; height: 100%; border-radius: 999px; background: #1a1433; }
+.goal-note { font-size: 14px; line-height: 1.4; font-weight: 600; }
+
+.request-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.request { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 20px; background: var(--surface); }
+.request-main { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+.request-main strong { font-size: 16px; font-weight: 750; }
+.request-status { font-size: 14px; font-weight: 700; color: var(--muted); }
+.request.is-approved .request-status { color: var(--green-text); }
+.request.is-refused .request-status { color: var(--red-text); }
+.gift-code { display: inline-flex; align-items: center; gap: 8px; }
+.gift-code code, .offer-code code { padding: 4px 8px; border-radius: 8px; background: var(--bg); font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: 16px; font-weight: 700; letter-spacing: 0.06em; }
+.icon-btn-sm { width: 34px; height: 34px; border-radius: 10px; background: var(--bg); }
+
+.challenges { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.challenge { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 20px; background: var(--surface); }
+.challenge-icon { flex: none; width: 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; background: var(--bg); color: var(--orange); }
+.challenge.is-done .challenge-icon { background: var(--green); color: #fff; }
+.challenge-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.challenge-main strong { font-size: 16px; line-height: 1.3; font-weight: 750; }
+.challenge-bar { display: block; height: 8px; overflow: hidden; border-radius: 999px; background: var(--bg); }
+.challenge-bar span { display: block; height: 100%; border-radius: 999px; background: var(--yellow-deep); }
+.challenge.is-done .challenge-bar span { background: var(--green); }
+.challenge-points { font-family: var(--font-display); font-size: 18px; font-weight: 880; white-space: nowrap; }
+
+.offers { display: grid; gap: 8px; margin: 12px 0; padding: 0; list-style: none; }
+.offer { width: 100%; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 4px 12px; padding: 12px; border: 0; border-radius: 20px; background: var(--surface); color: var(--fg); text-align: left; }
+.offer:hover { background: var(--surface-2); }
+.offer-main { display: flex; flex-direction: column; }
+.offer-main strong { font-size: 16px; font-weight: 750; }
+.offer-main span { font-size: 14px; color: var(--muted); }
+.offer-rate { font-family: var(--font-display); font-size: 20px; font-weight: 880; }
+.offer-on { grid-column: 2 / -1; justify-self: start; display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 999px; background: var(--green-soft); color: var(--green-text); font-size: 12px; font-weight: 800; }
+.partner-tile { flex: none; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 13px; background: var(--art); color: #fff; font-family: var(--font-display); font-size: 14px; font-weight: 900; letter-spacing: -0.02em; }
+.partner-tile.is-lg { width: 64px; height: 64px; border-radius: 18px; font-size: 18px; }
+.wallet-fine { display: flex; gap: 6px; line-height: 1.4; }
+.wallet-fine svg { flex: none; margin-top: 2px; }
+
+.rewards { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.reward { width: 100%; display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 10px; border: 0; border-radius: 20px; background: var(--surface); color: var(--fg); text-align: left; }
+.reward:hover { background: var(--surface-2); }
+.reward.is-goal { box-shadow: inset 0 0 0 2.5px var(--yellow-deep); }
+.reward-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.reward-main strong { font-size: 16px; font-weight: 750; }
+.reward-state { font-size: 14px; font-weight: 650; color: var(--muted); }
+.reward-state.is-ok { color: var(--green-text); }
+.reward-goal { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 999px; background: var(--yellow); color: var(--on-yellow); font-size: 12px; font-weight: 800; white-space: nowrap; }
+.reward-art { flex: none; position: relative; width: 64px; height: 44px; display: flex; flex-direction: column; justify-content: space-between; padding: 5px 7px; overflow: hidden; border-radius: 10px; background: var(--art, #1a1433); color: #fff; box-shadow: inset 0 -10px 18px rgba(0, 0, 0, 0.12); }
+.reward-art.is-transfer { --art: #0e7490; }
+.reward-art.is-donation { --art: #be185d; }
+.reward-art-lg { width: 132px; height: 86px; padding: 10px 12px; border-radius: 16px; }
+.reward-mark { font-family: var(--font-display); font-size: 11px; font-weight: 900; }
+.reward-value { align-self: flex-end; font-family: var(--font-display); font-size: 15px; line-height: 1; font-weight: 900; }
+.reward-art-lg .reward-mark { font-size: 16px; }
+.reward-art-lg .reward-value { font-size: 26px; }
+
+.ledger { display: grid; margin: 0; padding: 0; list-style: none; }
+.ledger-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 2px solid var(--surface); }
+.ledger-row:last-child { border-bottom: 0; }
+.ledger-icon { flex: none; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 12px; background: var(--surface); }
+.ledger-row.is-cashback .ledger-icon { background: var(--green-soft); color: var(--green-text); }
+.ledger-row.is-challenge .ledger-icon { background: var(--yellow-soft); }
+.ledger-row.is-redeem .ledger-icon { background: var(--pink-soft); color: var(--pink-text); }
+.ledger-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.ledger-main strong { font-size: 15px; line-height: 1.3; font-weight: 750; }
+.ledger-main span { font-size: 13px; color: var(--muted); }
+.ledger-main .ledger-wait { color: var(--fg-2); font-weight: 700; }
+.ledger-amount { font-family: var(--font-display); font-size: 16px; font-weight: 850; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ledger-row.is-pending .ledger-amount { color: var(--muted); }
+.ledger-more { margin-top: 10px; }
+
+.how { padding: 4px 16px; border-radius: 22px; background: var(--surface); }
+.how summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 0; list-style: none; cursor: pointer; }
+.how summary::-webkit-details-marker { display: none; }
+.how[open] summary .chev { transform: rotate(180deg); }
+.how ul { display: grid; gap: 10px; margin: 0 0 12px; padding-left: 18px; font-size: 15px; line-height: 1.45; }
+.how > p { margin-bottom: 14px; line-height: 1.4; }
+
+.rsheet { display: grid; gap: 14px; }
+.rsheet > .reward-art { justify-self: center; }
+.rsheet .sheet-text { margin-bottom: 0; }
+.rsheet-calc { margin: 0; }
+.rsheet-fine { line-height: 1.4; }
+.offer-head { display: flex; align-items: center; gap: 14px; }
+.offer-head p { display: flex; flex-direction: column; }
+.offer-head strong { font-size: 18px; font-weight: 800; }
+.offer-steps { display: grid; gap: 6px; margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.45; }
+.offer-code { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 14px; background: var(--yellow-soft); font-weight: 700; }
+.goal-option { display: flex; align-items: center; gap: 12px; min-height: 64px; }
+
+/* Carte de la cagnotte sur l'accueil */
+.wallet-mini { --fg: #1a1433; --muted: #4a4262; display: grid; gap: 10px; padding: 18px; border-radius: 26px; background: var(--yellow); color: #1a1433; text-decoration: none; }
+.wallet-mini-top { display: flex; align-items: center; justify-content: space-between; font-size: 15px; font-weight: 750; }
+.wallet-mini-top > span { display: inline-flex; align-items: center; gap: 6px; }
+.wallet-mini-amount { font-family: var(--font-display); font-size: 48px; line-height: 1; font-weight: 900; font-stretch: 122%; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.wallet-mini-goal { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding: 10px; border-radius: 16px; background: rgba(255, 255, 255, 0.58); }
+.wallet-mini-label { display: flex; align-items: center; gap: 5px; margin-bottom: 6px; font-size: 14px; font-weight: 750; }
+.wallet-mini-pct { font-family: var(--font-display); font-size: 18px; font-weight: 880; }
+.wallet-mini-challenge { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14px; line-height: 1.35; font-weight: 650; }
+
+@media (min-width: 700px) {
+  .wallet-hero { padding: 28px; }
+  .wallet-amount { font-size: 76px; }
+}
+@media (min-width: 1100px) {
+  .wallet-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 44px; align-items: start; }
+  .wallet-side .block-first { margin-top: 0; }
+  .wallet-amount { font-size: 88px; }
+}
+
+/* Exercices partenaires */
+.sponsored-list { display: grid; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
+.sponsored-row { display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 10px; border-radius: 18px; background: var(--surface); color: var(--fg); text-decoration: none; }
+.sponsored-row:hover { background: var(--surface-2); }
+.sponsored-row .partner-tile { width: 40px; height: 40px; border-radius: 12px; font-size: 12px; }
+.sponsored-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.sponsored-main strong { font-size: 15px; line-height: 1.3; font-weight: 750; }
+.sponsored-main .muted { line-height: 1.3; }
+.sponsored-bonus { flex: none; min-width: 48px; height: 30px; display: grid; place-items: center; padding: 0 8px; border-radius: 999px; background: var(--yellow); color: #1a1433; font-family: var(--font-display); font-size: 15px; font-weight: 900; }
+.sponsored-row.is-done .sponsored-bonus { background: var(--green-soft); color: var(--green-text); }
+.sponsor-pill { background: color-mix(in srgb, var(--art) 12%, var(--bg)); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--art) 40%, transparent); color: var(--fg); }
+.offer-subtitle { margin: 4px 0 6px; font-size: 15px; font-weight: 800; color: var(--muted); }
+.offer-exercises ul { display: grid; gap: 6px; margin: 0; padding-left: 18px; font-size: 15px; line-height: 1.45; }
+.gain-challenges.is-sponsored li { background: var(--surface); }

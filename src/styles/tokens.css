@@ -1,0 +1,202 @@
+/*
+ * Jetons de design LearnWard.
+ * Les composants n'utilisent que ces noms sémantiques : le mode sombre et la lecture facilitée
+ * se règlent donc ici, sans toucher au reste.
+ */
+:root {
+  /* Marque */
+  --yellow: #ffd60a;
+  --yellow-deep: #d9b300;
+  --yellow-soft: color-mix(in srgb, var(--yellow) 30%, #ffffff);
+  --on-yellow: #1a1433;
+
+  /* Surfaces et texte */
+  --bg: #ffffff;
+  --bg-elev: #ffffff;
+  --surface: #f3f1f7;
+  --surface-2: #e8e4f0;
+  --line: #e2deeb;
+  --fg: #1a1433;
+  --fg-2: #3a3356;
+  --muted: #615a77;
+  --faint: #9d97b0;
+  --backdrop: rgba(26, 20, 51, 0.45);
+  --stage: #e9e6f0;
+
+  /* Éléments pleins (bouton principal, sélection) */
+  --solid: #1a1433;
+  --on-solid: #ffffff;
+  --solid-shadow: #000000;
+
+  /* Matières */
+  --blue: #2d5bff;
+  --blue-soft: #e3e9ff;
+  --blue-text: #1d3fd0;
+  --pink: #d1206a;
+  --pink-soft: #ffe2ee;
+  --pink-text: #b8115a;
+
+  /* États */
+  --green: #00a862;
+  --green-deep: #007a47;
+  --green-soft: #d6f5e5;
+  --green-text: #00703f;
+  --red: #ec3a2b;
+  --red-deep: #b8261a;
+  --red-soft: #ffe3df;
+  --red-text: #b3241a;
+  --orange: #ea5a0c;
+  /* Modes du programme : révision (bleu) et avance (violet) */
+  --violet: #6d28d9;
+  --violet-soft: #efe7ff;
+  --violet-text: #5b21b6;
+  /* Fonds pleins sous texte blanc : contraste AA dans les deux thèmes */
+  --blue-strong: #2d5bff;
+  --pink-strong: #d1206a;
+
+  --shadow-lg: 0 24px 60px -24px rgba(26, 20, 51, 0.35);
+  --fam-mix: 0%;
+  /* Couleurs de matière : texte assombri en clair, éclairci en sombre ; fond doux */
+  --sub-mixer: #000000;
+  --sub-mix: 14%;
+  --sub-soft-mix: 11%;
+  --sub-fill-mix: 0%;
+
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --font-display: "Archivo Variable", "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-text: var(--font-display);
+  --text-tracking: 0;
+  --text-leading: 1.5;
+  --text-stretch: 100%;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12101d;
+    --bg-elev: #1b1829;
+    --surface: #1f1b2f;
+    --surface-2: #2a2540;
+    --line: #322c48;
+    --fg: #f4f1ff;
+    --fg-2: #d9d4ee;
+    --muted: #aca5c4;
+    --faint: #726b8d;
+    --backdrop: rgba(5, 4, 12, 0.66);
+    --stage: #0b0a12;
+    --solid: #f4f1ff;
+    --on-solid: #12101d;
+    --solid-shadow: #7d769b;
+    --yellow-soft: color-mix(in srgb, var(--yellow) 16%, transparent);
+    --blue: #6f8fff;
+    --blue-soft: rgba(111, 143, 255, 0.18);
+    --blue-text: #a9bcff;
+    --pink: #ff5c9a;
+    --pink-soft: rgba(255, 92, 154, 0.18);
+    --pink-text: #ff9dc3;
+    --green: #1fbf78;
+    --green-deep: #0e7d4c;
+    --green-soft: rgba(31, 191, 120, 0.17);
+    --green-text: #6fe3ad;
+    --red: #ff5a4a;
+    --red-deep: #c23224;
+    --red-soft: rgba(255, 90, 74, 0.17);
+    --red-text: #ff9a8f;
+    --shadow-lg: 0 24px 60px -24px rgba(0, 0, 0, 0.7);
+    --fam-mix: 38%;
+    --violet: #a78bfa;
+    --violet-soft: rgba(167, 139, 250, 0.18);
+    --violet-text: #cbbcff;
+    --sub-mixer: #ffffff;
+    --sub-mix: 42%;
+    --sub-soft-mix: 22%;
+    --sub-fill-mix: 24%;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #12101d;
+  --bg-elev: #1b1829;
+  --surface: #1f1b2f;
+  --surface-2: #2a2540;
+  --line: #322c48;
+  --fg: #f4f1ff;
+  --fg-2: #d9d4ee;
+  --muted: #aca5c4;
+  --faint: #726b8d;
+  --backdrop: rgba(5, 4, 12, 0.66);
+  --stage: #0b0a12;
+  --solid: #f4f1ff;
+  --on-solid: #12101d;
+  --solid-shadow: #7d769b;
+  --yellow-soft: color-mix(in srgb, var(--yellow) 16%, transparent);
+  --blue: #6f8fff;
+  --blue-soft: rgba(111, 143, 255, 0.18);
+  --blue-text: #a9bcff;
+  --pink: #ff5c9a;
+  --pink-soft: rgba(255, 92, 154, 0.18);
+  --pink-text: #ff9dc3;
+  --green: #1fbf78;
+  --green-deep: #0e7d4c;
+  --green-soft: rgba(31, 191, 120, 0.17);
+  --green-text: #6fe3ad;
+  --red: #ff5a4a;
+  --red-deep: #c23224;
+  --red-soft: rgba(255, 90, 74, 0.17);
+  --red-text: #ff9a8f;
+  --shadow-lg: 0 24px 60px -24px rgba(0, 0, 0, 0.7);
+  --fam-mix: 38%;
+  --violet: #a78bfa;
+  --violet-soft: rgba(167, 139, 250, 0.18);
+  --violet-text: #cbbcff;
+  --sub-mixer: #ffffff;
+  --sub-mix: 42%;
+  --sub-soft-mix: 22%;
+  --sub-fill-mix: 24%;
+  color-scheme: dark;
+}
+
+/* Lecture facilitée : police conçue pour la lisibilité, lettres et lignes plus espacées. */
+:root[data-readable="true"] {
+  --font-text: "Atkinson Hyperlegible Next Variable", "Atkinson Hyperlegible", system-ui, sans-serif;
+  --text-tracking: 0.02em;
+  --text-leading: 1.65;
+}
+
+/* Les zones jaunes gardent toujours un texte et des boutons foncés, quel que soit le thème. */
+.on-yellow {
+  --fg: #1a1433;
+  --fg-2: #3a3356;
+  --muted: #4a4262;
+  --solid: #1a1433;
+  --on-solid: #ffffff;
+  --solid-shadow: #000000;
+  color: var(--fg);
+}
+
+/* Couleur de famille de passion, éclaircie en mode sombre pour rester lisible. */
+.fam, .tray-chip, .family, .fam-pill, .pcard, .context-card, .pchip-pair, .intro-chip, .demo-preset i {
+  --fam-text: color-mix(in srgb, var(--fam) calc(100% - var(--fam-mix)), white);
+}
+
+/* Matière : la couleur arrive en ligne (style="--sub: …") et se décline ici. */
+[style*="--sub:"] {
+  --sub-text: color-mix(in srgb, var(--sub), var(--sub-mixer) var(--sub-mix));
+  --sub-soft: color-mix(in srgb, var(--sub) var(--sub-soft-mix), transparent);
+  --sub-fill: color-mix(in srgb, var(--sub), #ffffff var(--sub-fill-mix));
+}
+
+/*
+ * Couleurs d'accent (Moi > Apparence). Elles remplacent le jaune de la marque partout où il sert de fond :
+ * même texte sombre posé dessus, contraste AA vérifié par les tests (src/lib/theme/accents.ts).
+ */
+:root[data-accent="citron"] { --yellow: #c6f432; --yellow-deep: #97c20f; }
+:root[data-accent="menthe"] { --yellow: #3df2b0; --yellow-deep: #12c085; }
+:root[data-accent="cyan"] { --yellow: #4cd7ff; --yellow-deep: #14a6d4; }
+:root[data-accent="lilas"] { --yellow: #c4a1ff; --yellow-deep: #9a6cf0; }
+:root[data-accent="rose"] { --yellow: #ff8ad8; --yellow-deep: #e055b5; }
+:root[data-accent="corail"] { --yellow: #ff8f70; --yellow-deep: #e5603d; }
+:root[data-accent="orange"] { --yellow: #ffa62b; --yellow-deep: #e07f00; }

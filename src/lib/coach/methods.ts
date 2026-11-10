@@ -205,7 +205,7 @@ function inDomain(e: Evidence, d: MethodDomain): boolean {
 }
 
 export interface PracticeLog {
-  kind: "automatismes" | "vo" | "oral" | "blanc";
+  kind: "automatismes" | "vo" | "oral" | "blanc" | "entrainement";
   at: string;
   minutes: number;
 }

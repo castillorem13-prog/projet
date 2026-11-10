@@ -1,5 +1,23 @@
 # Journal des corrections
 
+## Banque de cours et d'exercices
+
+Un cours pour chacune des 555 unités du programme et un entraînement à volonté, vérifié par le code
+(`src/lib/content/bank/`, détails dans `docs/ARCHITECTURE_PEDAGOGIQUE.md`, partie 14).
+
+| Ajout | Détail |
+| --- | --- |
+| Cours | 555 fiches (une par unité, de la 6e à la terminale), page `/cours/[unit]` |
+| Entraînement | Page `/entrainement/[unit]` : séries de 8 exercices, du rappel au transfert, pour 490 unités |
+| Générateurs | 1 378 générateurs (249 calculés, 1 129 tirés des faits), 200 graines chacun : 275 600 exercices vérifiés un par un par les tests, dont 153 401 réellement différents |
+| Faits sourcés | 1 512 faits (dates, notions, œuvres, personnages, vocabulaire, classements) |
+| Vérifications | `npm run bank:python` exécute les 1 400 codes Python affichés ; `npm run bank:faits` recoupe dates et œuvres avec Wikidata (269 faits recoupés : 169 dates sur 231, 100 œuvres sur 126 ; les 36 écarts relus à la main ne sont pas des erreurs de la banque, mais des dates absentes de Wikidata ou des dates d'un autre événement, comme une première version ou une parution en feuilleton) ; `npm run banque` donne les chiffres et l'export JSON |
+
+**À coordonner avec Rémy (types partagés).** `OtherCompetence` (`src/lib/content/types.ts`) gagne six compétences
+(`de-comprendre`, `de-grammaire`, `an-langue`, `an-culture`, `ns-programmer`, `ns-algo`), reprises dans `meta.ts` et
+`mock.ts` ; `PracticeLog.kind` (`src/lib/coach/methods.ts`) accepte `"entrainement"`. Aucun fichier de `supabase/`,
+`src/app/api/` ou `src/server/` n'est modifié. Aucune bibliothèque ajoutée.
+
 ## v8 : la v7 corrigée, fiabilisée et allégée
 
 Aucune fonctionnalité nouvelle : tout ce qui marchait en v7 marche pareil, en mieux. Les sauvegardes de la v7 sont

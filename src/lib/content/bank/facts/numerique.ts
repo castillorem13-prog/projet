@@ -1,0 +1,126 @@
+import type { Fact, FactSet } from "../types";
+
+/** Faits du numérique : technologie, SNT, NSI. */
+
+const t = (id: string, units: string[], term: string, definition: string): Fact => ({ kind: "term", id, units, term, definition });
+const c = (id: string, units: string[], set: string, item: string, category: string): Fact => ({ kind: "class", id, units, set, item, category });
+const d = (id: string, units: string[], label: string, year: number, when?: string): Fact => ({ kind: "date", id, units, label, year, ...(when ? { when } : {}) });
+const p = (id: string, units: string[], name: string, role: string): Fact => ({ kind: "person", id, units, name, role });
+
+const NET = ["2nde-snt-internet", "Tle-nsi-reseaux", "3e-techno-donnees", "1re-nsi-architecture"];
+const WEB = ["2nde-snt-web", "1re-nsi-web"];
+const DATA = ["2nde-snt-donnees", "1re-nsi-tables", "Tle-nsi-bdd"];
+const PROG = ["1re-nsi-programmation", "3e-techno-programmer", "2nde-snt-embarque", "5e-techno-fonctionnement", "4e-techno-fonctionnement"];
+const CHAINES = ["3e-techno-chaines", "4e-techno-fonctionnement", "1re-si-analyser", "2nde-snt-embarque"];
+const HIST = ["1re-nsi-architecture", "2nde-snt-internet", "2nde-snt-web", "Tle-nsi-programmation"];
+
+export const NUMERIQUE_FACTS: FactSet = {
+  id: "faits-numerique",
+  subject: "nsi",
+  title: "Numérique : vocabulaire, classements, repères",
+  status: "needs_review",
+  sources: [
+    { id: "techno-c4-2024", label: "Programme de technologie du cycle 4, BO n° 9 du 29 février 2024", url: "https://sti.eduscol.education.fr/sites/eduscol.education.fr.sti/files/textes//16802-programme-de-technologie-c4.pdf" },
+    { id: "lycee-2019", label: "Programmes de SNT (2nde) et de NSI (1re, Tle), BO spécial n° 1 du 22 janvier 2019 et n° 8 du 25 juillet 2019", url: "https://eduscol.education.gouv.fr/4368/enseigner-au-lycee-generaltechnologique" },
+  ],
+  sets: {
+    capteur: { prompt: "Capteur ou actionneur ?", categories: ["Capteur", "Actionneur"] },
+    materiel: { prompt: "Matériel ou logiciel ?", categories: ["Matériel", "Logiciel"] },
+    pile: { prompt: "Quelle structure de données convient ?", categories: ["Pile", "File"] },
+  },
+  facts: [
+    t("nu-algorithme", ["1re-nsi-algorithmique", ...PROG], "Algorithme", "Suite finie et non ambiguë d'instructions permettant de résoudre un problème"),
+    t("nu-variable", PROG, "Variable", "Emplacement nommé de la mémoire qui contient une valeur pouvant changer"),
+    t("nu-boucle", PROG, "Boucle", "Structure qui répète un bloc d'instructions"),
+    t("nu-condition", PROG, "Instruction conditionnelle", "Structure qui exécute un bloc seulement si une condition est vraie"),
+    t("nu-fonction", ["1re-nsi-programmation", "3e-techno-projet", "Tle-nsi-programmation"], "Fonction", "Bloc d'instructions nommé, réutilisable, qui peut recevoir des paramètres et renvoyer une valeur"),
+    t("nu-bit", ["1re-nsi-donnees", "3e-techno-donnees", "2nde-snt-photo"], "Bit", "Plus petite unité d'information, valant 0 ou 1"),
+    t("nu-octet", ["1re-nsi-donnees", "3e-techno-donnees", "2nde-snt-photo"], "Octet", "Groupe de 8 bits"),
+    t("nu-pixel", ["2nde-snt-photo"], "Pixel", "Plus petit élément d'une image numérique, auquel on associe une couleur"),
+    t("nu-exif", ["2nde-snt-photo", "2nde-snt-donnees"], "Données EXIF", "Métadonnées enregistrées dans une photo : date, appareil, réglages, parfois position"),
+    t("nu-metadonnee", ["2nde-snt-donnees", "2nde-snt-photo"], "Métadonnée", "Donnée qui décrit une autre donnée"),
+    t("nu-csv", DATA, "Format CSV", "Format texte qui représente une table, les valeurs étant séparées par des virgules ou des points-virgules"),
+    t("nu-protocole", NET, "Protocole", "Ensemble de règles qui permettent à des machines de communiquer"),
+    t("nu-ip", NET, "Adresse IP", "Numéro qui identifie une machine sur un réseau"),
+    t("nu-routeur", NET, "Routeur", "Équipement qui achemine les paquets de données entre des réseaux"),
+    t("nu-paquet", NET, "Paquet", "Morceau d'un message, transmis séparément sur le réseau avec l'adresse de son destinataire"),
+    t("nu-dns", ["2nde-snt-internet", "2nde-snt-web", "Tle-nsi-reseaux"], "DNS", "Système qui associe des noms de domaine à des adresses IP"),
+    t("nu-url", WEB, "URL", "Adresse d'une ressource sur le Web"),
+    t("nu-http", WEB, "HTTP", "Protocole d'échange entre un navigateur et un serveur web"),
+    t("nu-html", WEB, "HTML", "Langage de description de la structure et du contenu des pages web"),
+    t("nu-css", WEB, "CSS", "Langage qui décrit la mise en forme des pages web"),
+    t("nu-serveur", [...WEB, "2nde-snt-internet"], "Serveur", "Machine qui répond aux requêtes de clients en leur fournissant des ressources"),
+    t("nu-navigateur", WEB, "Navigateur", "Logiciel client qui affiche les pages web"),
+    t("nu-cookie", ["2nde-snt-web", "1re-nsi-web"], "Cookie", "Petit fichier déposé par un site sur l'ordinateur de l'utilisateur pour mémoriser des informations"),
+    t("nu-graphe", ["2nde-snt-reseaux-sociaux", "Tle-nsi-structures"], "Graphe", "Ensemble de sommets reliés par des arêtes"),
+    t("nu-gps", ["2nde-snt-localisation"], "GPS", "Système de localisation par satellites qui calcule une position à partir de durées de propagation de signaux"),
+    t("nu-capteur", CHAINES, "Capteur", "Composant qui prélève une information sur une grandeur physique et la convertit en signal"),
+    t("nu-actionneur", CHAINES, "Actionneur", "Composant qui transforme un ordre en action physique (mouvement, lumière, son)"),
+    t("nu-chaine-info", CHAINES, "Chaîne d'information", "Partie d'un système qui acquiert, traite et communique les informations"),
+    t("nu-chaine-energie", CHAINES, "Chaîne d'énergie", "Partie d'un système qui alimente, distribue, convertit et transmet l'énergie"),
+    t("nu-cycle-vie", ["3e-techno-usages", "4e-techno-usages"], "Cycle de vie", "Étapes de la vie d'un objet, de l'extraction des matières premières jusqu'à son recyclage ou son élimination"),
+    t("nu-cahier", ["5e-techno-conception", "4e-techno-conception", "3e-techno-projet", "1re-si-innover"], "Cahier des charges", "Document qui décrit le besoin et les contraintes auxquels un objet doit répondre"),
+    t("nu-prototype", ["5e-techno-conception", "4e-techno-conception", "Tle-si-projet"], "Prototype", "Premier exemplaire d'un objet, réalisé pour le tester"),
+    t("nu-os", ["1re-nsi-architecture", "Tle-nsi-reseaux"], "Système d'exploitation", "Logiciel qui gère les ressources de la machine et permet de lancer les programmes"),
+    t("nu-processeur", ["1re-nsi-architecture"], "Processeur", "Composant qui exécute les instructions des programmes"),
+    t("nu-ram", ["1re-nsi-architecture"], "Mémoire vive", "Mémoire rapide et volatile qui contient les programmes et données en cours d'utilisation"),
+    t("nu-pile", ["Tle-nsi-structures"], "Pile", "Structure de données où le dernier élément ajouté est le premier retiré"),
+    t("nu-file", ["Tle-nsi-structures"], "File", "Structure de données où le premier élément ajouté est le premier retiré"),
+    t("nu-recursivite", ["Tle-nsi-programmation"], "Fonction récursive", "Fonction qui s'appelle elle-même"),
+    t("nu-cle-primaire", ["Tle-nsi-bdd"], "Clé primaire", "Attribut qui identifie de manière unique chaque enregistrement d'une table"),
+    t("nu-cle-etrangere", ["Tle-nsi-bdd"], "Clé étrangère", "Attribut qui fait référence à la clé primaire d'une autre table"),
+    t("nu-sql", ["Tle-nsi-bdd"], "SQL", "Langage de requêtes pour interroger et modifier une base de données relationnelle"),
+    t("nu-processus", ["Tle-nsi-reseaux"], "Processus", "Programme en cours d'exécution, géré par le système d'exploitation"),
+    t("nu-objet", ["Tle-nsi-programmation"], "Classe", "Modèle qui définit les attributs et les méthodes d'un type d'objets"),
+    t("nu-tri", ["1re-nsi-algorithmique", "1re-nsi-tables"], "Tri", "Rangement des éléments d'une collection dans un ordre donné"),
+    t("nu-glouton", ["1re-nsi-algorithmique"], "Algorithme glouton", "Algorithme qui fait à chaque étape le choix localement le meilleur"),
+    t("nu-diviser", ["Tle-nsi-algorithmique"], "Diviser pour régner", "Méthode qui découpe un problème en sous-problèmes plus petits, résolus puis combinés"),
+    t("nu-chiffrement", ["Tle-nsi-reseaux", "2nde-snt-internet"], "Chiffrement", "Transformation d'un message pour le rendre illisible à qui ne possède pas la clé"),
+
+    c("cl-thermo", CHAINES, "capteur", "Un capteur de température", "Capteur"),
+    c("cl-bouton", CHAINES, "capteur", "Un bouton poussoir", "Capteur"),
+    c("cl-micro", CHAINES, "capteur", "Un microphone", "Capteur"),
+    c("cl-photores", CHAINES, "capteur", "Une photorésistance", "Capteur"),
+    c("cl-accelero", CHAINES, "capteur", "Un accéléromètre", "Capteur"),
+    c("cl-led", CHAINES, "capteur", "Une DEL (LED)", "Actionneur"),
+    c("cl-moteur", CHAINES, "capteur", "Un moteur électrique", "Actionneur"),
+    c("cl-hp", CHAINES, "capteur", "Un haut-parleur", "Actionneur"),
+    c("cl-servo", CHAINES, "capteur", "Un servomoteur", "Actionneur"),
+    c("cl-buzzer", CHAINES, "capteur", "Un buzzer", "Actionneur"),
+    c("cl-cpu", ["1re-nsi-architecture", "3e-techno-donnees"], "materiel", "Le processeur", "Matériel"),
+    c("cl-memoire", ["1re-nsi-architecture", "3e-techno-donnees"], "materiel", "La mémoire vive", "Matériel"),
+    c("cl-clavier", ["1re-nsi-architecture", "3e-techno-donnees"], "materiel", "Le clavier", "Matériel"),
+    c("cl-disque", ["1re-nsi-architecture", "3e-techno-donnees"], "materiel", "Le disque SSD", "Matériel"),
+    c("cl-os", ["1re-nsi-architecture", "3e-techno-donnees"], "materiel", "Le système d'exploitation", "Logiciel"),
+    c("cl-nav", ["1re-nsi-architecture", "3e-techno-donnees"], "materiel", "Le navigateur web", "Logiciel"),
+    c("cl-tableur", ["1re-nsi-architecture", "3e-techno-donnees"], "materiel", "Le tableur", "Logiciel"),
+    c("cl-pilote", ["1re-nsi-architecture", "3e-techno-donnees"], "materiel", "Le pilote d'imprimante", "Logiciel"),
+    c("cl-annuler", ["Tle-nsi-structures"], "pile", "La fonction « annuler » d'un éditeur de texte", "Pile"),
+    c("cl-historique", ["Tle-nsi-structures"], "pile", "Le bouton « page précédente » d'un navigateur", "Pile"),
+    c("cl-appels", ["Tle-nsi-structures"], "pile", "Les appels d'une fonction récursive", "Pile"),
+    c("cl-impression", ["Tle-nsi-structures"], "pile", "Les documents envoyés à une imprimante", "File"),
+    c("cl-caisse", ["Tle-nsi-structures"], "pile", "Les clients qui attendent à une caisse", "File"),
+    c("cl-paquets", ["Tle-nsi-structures"], "pile", "Les paquets en attente dans un routeur", "File"),
+
+    d("dt-lovelace", HIST, "Ada Lovelace publie le premier programme destiné à une machine", 1843),
+    d("dt-turing", HIST, "Alan Turing décrit sa machine universelle", 1936),
+    d("dt-eniac", HIST, "Mise en service de l'ENIAC, l'un des premiers ordinateurs électroniques", 1946),
+    d("dt-arpanet", HIST, "Premier échange sur le réseau ARPANET, ancêtre d'Internet", 1969),
+    d("dt-tcpip", HIST, "Vinton Cerf et Bob Kahn publient les principes de TCP/IP", 1974),
+    d("dt-web", HIST, "Tim Berners-Lee propose le World Wide Web au CERN", 1989),
+    d("dt-linux", HIST, "Linus Torvalds publie la première version du noyau Linux", 1991),
+    d("dt-gps", ["2nde-snt-localisation"], "Le système GPS est déclaré pleinement opérationnel", 1995),
+    d("dt-smartphone", ["2nde-snt-embarque", "2nde-snt-photo"], "Sortie du premier iPhone, qui popularise le smartphone", 2007),
+    d("dt-facebook", ["2nde-snt-reseaux-sociaux"], "Création de Facebook", 2004),
+    d("dt-rgpd", ["2nde-snt-donnees", "2nde-snt-reseaux-sociaux"], "Entrée en application du RGPD dans l'Union européenne", 2018),
+
+    p("pe-lovelace", HIST, "Ada Lovelace", "mathématicienne anglaise, autrice du premier programme informatique publié"),
+    p("pe-turing", HIST, "Alan Turing", "mathématicien britannique, fondateur de l'informatique théorique"),
+    p("pe-vonneumann", ["1re-nsi-architecture"], "John von Neumann", "mathématicien qui décrivit l'architecture des ordinateurs à programme enregistré"),
+    p("pe-bernerslee", ["2nde-snt-web", "1re-nsi-web"], "Tim Berners-Lee", "informaticien britannique, inventeur du World Wide Web"),
+    p("pe-hopper", HIST, "Grace Hopper", "informaticienne américaine, pionnière des compilateurs"),
+    p("pe-hamilton", HIST, "Margaret Hamilton", "informaticienne qui dirigea l'écriture du logiciel de navigation des missions Apollo"),
+    p("pe-cerf", ["2nde-snt-internet", "Tle-nsi-reseaux"], "Vinton Cerf", "ingénieur américain, co-inventeur du protocole TCP/IP"),
+    p("pe-torvalds", ["Tle-nsi-reseaux", "1re-nsi-architecture"], "Linus Torvalds", "informaticien finlandais, créateur du noyau Linux"),
+  ],
+};

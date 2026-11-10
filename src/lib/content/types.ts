@@ -21,7 +21,8 @@ export type OtherCompetence =
   | "es-comprendre" | "es-grammaire" | "es-ecrire"
   | "emc-regle" | "emc-argumenter" | "ar-analyser" | "ar-creer" | "mu-ecouter" | "mu-creer"
   | "ep-tactique" | "ep-securite" | "se-donnees" | "se-mecanismes" | "sn-reseaux" | "sn-donnees"
-  | "ph-concepts" | "ph-argumenter";
+  | "ph-concepts" | "ph-argumenter"
+  | "de-comprendre" | "de-grammaire" | "an-langue" | "an-culture" | "ns-programmer" | "ns-algo";
 export type CompetenceId = MathsCompetence | PhysicsCompetence | OtherCompetence;
 
 /** Texte fixe, ou réécrit à partir de la passion de l'élève. */

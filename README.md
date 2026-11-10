@@ -148,3 +148,35 @@ git push
 * On évite de modifier le même fichier en même temps : on se prévient.
 * On ne merge jamais sa propre Pull Request sans l'accord de l'autre.
 
+
+
+
+
+
+
+## Banque de cours et d'exercices
+
+Un cours par unité du programme et des exercices fabriqués et vérifiés par le code (`src/lib/content/bank/`).
+Les règles sont dans `docs/ARCHITECTURE_PEDAGOGIQUE.md` (partie 14).
+
+```bash
+npm test
+```
+
+```bash
+npm run banque
+```
+
+```bash
+npm run bank:python
+```
+
+```bash
+npm run bank:faits
+```
+
+* `npm test` vérifie chaque exercice que l'appli peut afficher (200 par générateur).
+* `npm run banque` affiche les chiffres ; `npm run banque -- --export 5` écrit un export JSON dans `export/` (non suivi par Git).
+* `npm run bank:python` exécute avec Python les programmes affichés dans les exercices de NSI.
+* `npm run bank:faits` recoupe les dates et les œuvres avec Wikidata (connexion Internet nécessaire).
+

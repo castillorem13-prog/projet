@@ -12,6 +12,7 @@ import "@/styles/programme.css";
 import "@/styles/wallet.css";
 import "@/styles/coach.css";
 import "@/styles/v7.css";
+import "@/styles/bank.css";
 import { DemoBridge } from "@/components/shell/demo-bridge";
 import { THEME_BOOT, ThemeSync } from "@/components/shell/theme-sync";
 import { StoreProvider } from "@/lib/store";

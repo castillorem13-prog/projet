@@ -1,0 +1,33 @@
+/* Banque d'exercices et de cours : fiche de cours et fin d'entraînement. */
+
+.lesson-page { --focus-w: 720px; }
+.topbar-title { font-weight: 750; font-size: 16px; }
+.lesson { display: grid; gap: 18px; padding-bottom: 12px; }
+.lesson-head { display: grid; gap: 10px; justify-items: start; }
+.lesson-title { margin: 0; overflow-wrap: anywhere; }
+.lesson-intro { margin: 0; font-size: 18px; line-height: 1.5; color: var(--fg-2, var(--fg)); }
+.lesson-block { display: grid; gap: 8px; }
+.lesson-h2 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 18px; font-weight: 800; font-family: var(--font-display); }
+.lesson-h2 svg { flex: none; color: var(--muted); }
+.lesson-list, .lesson-steps { display: grid; gap: 6px; margin: 0; padding-left: 22px; font-size: 16px; line-height: 1.5; }
+.lesson-list li, .lesson-steps li { overflow-wrap: anywhere; }
+.lesson-example { padding: 14px 16px; border-radius: 16px; background: var(--surface); box-shadow: inset 0 0 0 2px var(--line); }
+.lesson-steps li::marker { font-weight: 800; }
+.lesson-pitfalls .lesson-h2 svg { color: var(--red-text, var(--red)); }
+.lesson-remember { display: grid; gap: 8px; padding: 14px 16px; border-radius: 16px; background: var(--yellow-soft); }
+.lesson-remember .lesson-h2 svg { color: var(--fg); }
+.lesson-source { display: grid; gap: 6px; padding: 12px 14px; border-radius: 16px; box-shadow: inset 0 0 0 2px var(--line); font-size: 14px; line-height: 1.45; }
+.lesson-source p { margin: 0; }
+
+.practice-end { width: 100%; max-width: var(--focus-w); margin: 0 auto; padding: 24px 20px 32px; display: grid; gap: 14px; justify-items: center; text-align: center; }
+.practice-end .display { margin: 0; overflow-wrap: anywhere; }
+.practice-end-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--yellow); color: var(--on-yellow, var(--fg)); }
+.practice-end-kicker { margin: 0; font-weight: 750; color: var(--muted); }
+.practice-end-stats { margin: 0; font-size: 18px; }
+.practice-end-actions { display: grid; gap: 10px; width: 100%; max-width: 420px; }
+.csheet-bank { display: grid; gap: 10px; }
+
+@media (min-width: 768px) {
+  .lesson-intro { font-size: 19px; }
+  .lesson { gap: 22px; }
+}

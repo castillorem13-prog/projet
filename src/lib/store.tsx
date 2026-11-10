@@ -594,6 +594,26 @@ export function logPractice(s: State, kind: PracticeLog["kind"], minutes: number
   return { ...s, practice: [...s.practice, { kind, at, minutes }], evidence: [...s.evidence, ...evidence], today: markDone(s.today, kind) };
 }
 
+/**
+ * Entraînement sur la banque d'exercices : une trace de maîtrise par exercice, un rappel espacé pour le chapitre,
+ * des minutes comptées dans la semaine. Pas de points : ils seront calculés par le serveur.
+ */
+export function applyPractice(s: State, unitId: string, items: ItemResult[], minutes: number): State {
+  const at = demoNow().toISOString();
+  const fresh: Evidence[] = items.map((i) => ({
+    unitId,
+    itemId: i.activityId,
+    at,
+    stage: i.stage,
+    result: i.status === "first" ? "success" : i.status === "retry" ? "partial" : "fail",
+    assistance: i.assistance,
+    ...(i.status !== "first" && i.errorType ? { errorType: i.errorType } : {}),
+  }));
+  const evidence = [...s.evidence, ...fresh];
+  const review = scheduleAfterSession(unitId, fresh, masteryOf(evidence.filter((e) => e.unitId === unitId)), demoNow());
+  return { ...s, evidence, reviews: [...s.reviews.filter((r) => r.unitId !== unitId), review], practice: [...s.practice, { kind: "entrainement", at, minutes }] };
+}
+
 export interface DrillAnswer {
   question: DrillQuestion;
   correct: boolean;

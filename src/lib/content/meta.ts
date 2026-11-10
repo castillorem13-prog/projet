@@ -96,6 +96,12 @@ export const COMPETENCES: Record<CompetenceId, { label: string; subject: Subject
   "sn-donnees": { label: "Analyser des données", subject: "snt", description: "Métadonnées, formats, vie privée" },
   "ph-concepts": { label: "Distinguer les concepts", subject: "philo", description: "Définir, comparer, nuancer" },
   "ph-argumenter": { label: "Argumenter", subject: "philo", description: "Thèse, argument, objection" },
+  "de-comprendre": { label: "Comprendre", subject: "allemand", description: "Saisir le sens d'un message" },
+  "de-grammaire": { label: "Choisir la bonne forme", subject: "allemand", description: "Conjuguer, décliner, placer le verbe" },
+  "an-langue": { label: "Lire la langue", subject: "latin", description: "Vocabulaire, déclinaisons, conjugaisons" },
+  "an-culture": { label: "Culture antique", subject: "latin", description: "Mythes, histoire, héritages" },
+  "ns-programmer": { label: "Programmer", subject: "nsi", description: "Lire, écrire et tester un programme" },
+  "ns-algo": { label: "Raisonner sur les données", subject: "nsi", description: "Représenter les données, choisir un algorithme" },
 };
 
 export const KINDS: Record<ActivityKind, { label: string }> = {

@@ -13,7 +13,10 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/*.test.ts",
-    "gen:catalog": "tsx scripts/gen-catalog.ts"
+    "gen:catalog": "tsx scripts/gen-catalog.ts",
+    "banque": "tsx scripts/bank.ts",
+    "bank:python": "tsx scripts/verify-python.ts",
+    "bank:faits": "tsx scripts/verify-facts.ts"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "5.2.8",

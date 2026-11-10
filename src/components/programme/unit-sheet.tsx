@@ -1,10 +1,12 @@
 "use client";
 
-import { ArrowRight, Check, ExternalLink, MapPin, Target, Timer } from "lucide-react";
+import { ArrowRight, BookOpen, Check, Dumbbell, ExternalLink, MapPin, Target, Timer } from "lucide-react";
 import Link from "next/link";
 import { Sheet } from "@/components/ui/sheet";
 import { SubjectChip } from "@/components/ui/subject-icon";
+import { BANK_CATALOG } from "@/lib/content/bank-catalog.generated";
 import { SESSION_LIST, findSession } from "@/lib/content/catalog";
+import { own } from "@/lib/cx";
 import { SUBJECTS } from "@/lib/content/meta";
 import { findUnit, levelRank, nextOf, sourceOf, statusIn, UNITS, type Unit } from "@/lib/curriculum";
 import { getLevel } from "@/lib/curriculum/levels";
@@ -13,6 +15,8 @@ import { getObjective } from "@/lib/curriculum/objectives";
 import { MASTERY, UNLOCK_STATE } from "@/lib/learning/mastery";
 import { setCurrentUnit, useMastery, useStore } from "@/lib/store";
 import { LockIcon, MasteryMeter, ModeChip, STATUS_LABEL, VerifyBadge } from "./parts";
+
+const LESSON_UNITS = new Set(BANK_CATALOG.lessons);
 
 /** Une séance jouable de la même matière, pour montrer le format quand celle du chapitre n'est pas rédigée. */
 function sampleFor(u: Unit) {
@@ -37,6 +41,8 @@ export function UnitSheet({ unit, onClose, onOpen }: { unit: Unit | null; onClos
   const locked = rel > 0 && !isUnlocked(unit, level, mastery);
   const blocking = rel > 0 ? blockingNeeds(unit, level, mastery) : [];
   const session = findSession(unit.sessionId);
+  const practice = own(BANK_CATALOG.practice, unit.id) ?? 0;
+  const hasLesson = LESSON_UNITS.has(unit.id);
   const needs = (unit.needs ?? []).map(findUnit).filter((u): u is Unit => Boolean(u));
   const next = nextOf(unit.id);
   const src = sourceOf(unit);
@@ -152,6 +158,33 @@ export function UnitSheet({ unit, onClose, onOpen }: { unit: Unit | null; onClos
                 <Link href={`/seance/${session.id}?mode=controle`} className="btn btn-ghost btn-block">
                   <Timer size={18} strokeWidth={2.6} />
                   <span>Contrôle blanc de 30 min</span>
+                </Link>
+              ) : null}
+              {practice ? (
+                <Link href={`/entrainement/${unit.id}`} className="btn btn-ghost btn-block">
+                  <Dumbbell size={18} strokeWidth={2.6} />
+                  <span>S'entraîner encore</span>
+                </Link>
+              ) : null}
+              {hasLesson ? (
+                <Link href={`/cours/${unit.id}`} className="btn btn-soft btn-block">
+                  <BookOpen size={18} strokeWidth={2.6} />
+                  <span>Lire le cours</span>
+                </Link>
+              ) : null}
+            </>
+          ) : practice || hasLesson ? (
+            <>
+              {practice ? (
+                <Link href={`/entrainement/${unit.id}`} className="btn btn-ink btn-block">
+                  <span>{startLabel}</span>
+                  <ArrowRight size={20} strokeWidth={2.6} />
+                </Link>
+              ) : null}
+              {hasLesson ? (
+                <Link href={`/cours/${unit.id}`} className={practice ? "btn btn-soft btn-block" : "btn btn-ink btn-block"}>
+                  <BookOpen size={18} strokeWidth={2.6} />
+                  <span>Lire le cours</span>
                 </Link>
               ) : null}
             </>

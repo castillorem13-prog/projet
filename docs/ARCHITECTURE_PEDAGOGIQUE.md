@@ -246,6 +246,8 @@ test qui le recalcule indépendamment (`tests/sessions.test.ts`).
 - Brevet de maths : calculatrice en partie 2, nombre de questions d'automatismes, points de rédaction (une seule source).
 - Bulletin officiel spécial n° 4 du 17 septembre 2026 : non lu, à consulter pour la session 2027.
 - Explorer : relecture par un enseignant de chaque capsule (notamment argent, IA et données personnelles).
+- Banque : les 555 cours et les lots de faits (statut « À relire »), en priorité les définitions et les faits que
+  Wikidata n'a pas permis de recouper (liste affichée par `npm run bank:faits`).
 
 ## 12. Version 7 : fluidité, rigueur par niveau, apprendre pour le plaisir
 
@@ -308,3 +310,38 @@ La pédagogie ne change pas. Trois règles techniques s'ajoutent, à respecter e
   `draftSeconds`) : elle est ainsi testée sans navigateur et reste la même partout.
 - **L'état venu du navigateur n'est jamais considéré comme sûr.** Tout passe par `sanitize` (`src/lib/store.tsx`). Un
   nouveau champ de l'état doit y avoir sa valeur de repli. Une valeur venue de l'adresse passe par `own` ou `safeReturn`.
+
+## 14. Banque de cours et d'exercices (`src/lib/content/bank/`)
+
+Les séances rédigées à la main restent la vitrine. La banque s'y ajoute pour que **chaque unité du programme** ait un
+cours et, partout où c'est possible, un entraînement presque inépuisable. Elle suit la règle du projet : **l'IA
+rédige, le code vérifie**. Aucun exercice n'entre dans la banque sans une contre-épreuve exécutée par les tests.
+
+| Élément | Où | Ce qui le vérifie |
+| --- | --- | --- |
+| Générateurs calculés (maths, physique-chimie, numérique, SES, conjugaison et accords) | `generators/*.ts` | Chaque générateur fabrique un exercice à partir d'une graine et une fonction `verify()` qui recalcule la réponse par un autre chemin (substitution, opération inverse, relecture de l'expression affichée, énumération, conservation des atomes…). Les codes Python affichés sont exécutés par un vrai Python (`npm run bank:python`). |
+| Faits sourcés (dates, notions, œuvres, personnages, vocabulaire, classements) | `facts/*.ts` | Chaque lot cite ses sources ; les tests refusent les doublons qui rendraient un QCM ambigu. Dates et œuvres sont recoupées avec Wikidata (`npm run bank:faits`, résultat dans `facts/verification.generated.ts`). |
+| Exercices tirés des faits | `from-facts.ts` | Écrits par le code à partir des faits : dater, reconnaître, remettre dans l'ordre, retrouver l'auteur, traduire, classer. Les distracteurs viennent du même lot. |
+| Cours, un par unité | `lessons/*.ts` | Structure (introduction, blocs, pièges, à retenir), propreté de l'écriture, et calculs des exemples recalculés (`checks`). |
+
+**Règles.**
+
+- `SEEDS = 200` : l'appli ne montre que les graines 0 à 199 et **les tests vérifient chacune d'elles**, pour chaque
+  générateur (bonne réponse acceptée, erreurs classiques refusées, trois indices différents, au moins trois choix
+  distincts, pas de « 1x », de « − −3 », de point décimal, ni de mot de marque).
+- Une réponse chiffrée a au plus six décimales, ou une tolérance déclarée ; le correcteur est `checkAnswer`
+  (`src/lib/pedagogy/answer-checker.ts`), le même que pour les séances.
+- Les écrans n'importent pas la banque : `/cours/[unit]` et `/entrainement/[unit]` sont générées à la construction,
+  et le reste de l'appli lit `bank-catalog.generated.ts` (`npm run gen:catalog`, lancé avant chaque `build`).
+- Statuts : les exercices calculés sont `computed` (justes par construction et par contre-épreuve) ; les cours et la
+  plupart des lots de faits restent **`needs_review`** tant qu'un enseignant ne les a pas relus. Le bac de français
+  reprend les données du projet (`cross_checked`). Rien de tout cela n'est présenté comme un texte officiel.
+- L'entraînement nourrit la maîtrise et les rappels (`applyPractice`), sans points ni cagnotte.
+
+**Ajouter du contenu.** Un générateur : `gen({ id, unit, title, stage, make })` dans le fichier de la matière, avec un
+`verify()` qui ne réutilise pas le calcul de l'énoncé. Un fait : une ligne dans le lot voulu (les exercices se créent
+tout seuls). Un cours : `lesson(unitId, intro, blocs, pièges, à retenir, { checks })`. Puis `npm test` et
+`npm run gen:catalog`.
+
+**Chiffres et export.** `npm run banque` affiche les chiffres ; `npm run banque -- --export 5` écrit
+`export/banque/*.json` (cours, faits, générateurs, exemples d'exercices), base possible pour la future base Supabase.

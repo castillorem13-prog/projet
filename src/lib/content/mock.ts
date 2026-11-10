@@ -58,6 +58,7 @@ export const INITIAL_PROFILE: Profile = {
     "emc-regle": 52, "emc-argumenter": 49, "ar-analyser": 44, "ar-creer": 57, "mu-ecouter": 50, "mu-creer": 46,
     "ep-tactique": 58, "ep-securite": 63, "se-donnees": 40, "se-mecanismes": 35, "sn-reseaux": 42, "sn-donnees": 38,
     "ph-concepts": 30, "ph-argumenter": 30,
+    "de-comprendre": 45, "de-grammaire": 40, "an-langue": 35, "an-culture": 45, "ns-programmer": 40, "ns-algo": 35,
   },
 };
 

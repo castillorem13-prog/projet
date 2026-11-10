@@ -27,7 +27,9 @@ Ne modifie pas les dossiers de l'autre personne sans qu'elle soit prévenue.
 - **Next.js 15.5** (App Router), **React 19**, **TypeScript** strict
 - Styles : **CSS maison** dans `src/styles/` (tokens dans `tokens.css`). **Pas de Tailwind**, pas de shadcn.
 - Icônes : `lucide-react`. Polices : Archivo et Atkinson Hyperlegible (fontsource).
-- Base de données et connexion : **Supabase** (à brancher).
+- Base de données et connexion : **Supabase**, via `@supabase/supabase-js` et `@supabase/ssr`. Les clients sont dans
+  `src/lib/supabase/` : `client.ts` dans les composants "use client", `server.ts` côté serveur. Connexion par mot de passe
+  ou par lien envoyé par mail ; le retour des emails passe par `src/app/auth/callback/`.
 - Tests : `node --test` avec `tsx`, dans `tests/`.
 
 N'ajoute **aucune nouvelle bibliothèque** (`npm install …`) sans le dire clairement et expliquer pourquoi.

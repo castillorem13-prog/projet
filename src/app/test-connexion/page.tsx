@@ -10,6 +10,8 @@ import { useCallback, useEffect, useState, type CSSProperties, type FormEvent } 
 import type { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 import { supabaseConfigured } from "@/lib/supabase/env";
+import { loadProgress, saveAttempt } from "@/lib/progress/api";
+import type { ProgressSnapshot } from "@/lib/progress/contract";
 
 const GRADES = ["6e", "5e", "4e", "3e", "2nde", "1re", "Tle"] as const;
 
@@ -41,6 +43,7 @@ function TestConnexion() {
   const [pseudo, setPseudo] = useState("");
   const [grade, setGrade] = useState<string>("2nde");
   const [message, setMessage] = useState("");
+  const [progress, setProgress] = useState<ProgressSnapshot | null>(null);
 
   const loadProfile = useCallback(
     async (u: User | null) => {
@@ -100,6 +103,27 @@ function TestConnexion() {
     void loadProfile(user);
   }
 
+  /** Envoie une fausse séance de 3 exercices, comme le fera l'appli à la fin d'une vraie séance. */
+  async function saveTestAttempt() {
+    const at = new Date().toISOString();
+    const due = new Date(Date.now() + 3 * 864e5).toISOString().slice(0, 10);
+    const res = await saveAttempt({
+      clientId: crypto.randomUUID(),
+      kind: "session",
+      sessionId: "seance-de-test",
+      unitId: "chapitre-de-test",
+      avgSeconds: 35,
+      evidence: [
+        { unitId: "chapitre-de-test", itemId: "exo-1", at, stage: "rappel", result: "success", assistance: 0 },
+        { unitId: "chapitre-de-test", itemId: "exo-2", at, stage: "application", result: "partial", assistance: 2, errorType: "calcul" },
+        { unitId: "chapitre-de-test", itemId: "exo-3", at, stage: "transfert", result: "fail", assistance: 4, errorType: "conceptuelle" },
+      ],
+      reviews: [{ unitId: "chapitre-de-test", due, reason: "Séance de test : rappel dans 3 jours." }],
+    });
+    setMessage(res.ok ? `Séance enregistrée (${res.attemptId.slice(0, 8)}…).` : `Séance refusée (${res.status}) : ${res.error}`);
+    if (res.ok) setProgress(await loadProgress());
+  }
+
   return (
     <main style={box}>
       <h1>Test connexion (temporaire)</h1>
@@ -140,6 +164,22 @@ function TestConnexion() {
               </div>
               <button style={button} type="submit">Créer mon profil</button>
             </form>
+          )}
+          {profile && (
+            <>
+              <h2 style={{ fontSize: 18, marginTop: 24 }}>Progression</h2>
+              <div style={row}>
+                <button style={button} type="button" onClick={saveTestAttempt}>Enregistrer une séance de test</button>
+                <button style={button} type="button" onClick={async () => setProgress(await loadProgress())}>Recharger ma progression</button>
+              </div>
+              {progress && (
+                <p>
+                  {progress.evidence.length} exercice{progress.evidence.length > 1 ? "s" : ""} enregistré{progress.evidence.length > 1 ? "s" : ""},{" "}
+                  {progress.reviews.length} rappel{progress.reviews.length > 1 ? "s" : ""} de révision
+                  {progress.reviews[0] ? ` (prochain : ${progress.reviews[0].due})` : ""}.
+                </p>
+              )}
+            </>
           )}
           <div style={row}>
             <button style={button} type="button" onClick={signOut}>Se déconnecter</button>

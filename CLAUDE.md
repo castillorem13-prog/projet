@@ -65,6 +65,8 @@ Les types exportés par `src/lib/` (par exemple `Profile`, `SessionResult`, `Wal
 la forme des données. **Quand le backend arrivera, il renverra des données de cette forme**, et le front n'aura qu'à
 changer d'où elles viennent. Donc :
 
+- **Progression** : le contrat est dans `src/lib/progress/contract.ts` (`AttemptPayload`, `ProgressSnapshot`). Le front
+  appelle `saveAttempt()` à la fin d'une séance et `loadProgress()` à la connexion (`src/lib/progress/api.ts`).
 - Un changement de type partagé se fait **à deux**, dans une PR dédiée.
 - Côté back, on valide toute donnée qui entre (Zod ou équivalent) avant de l'écrire en base.
 

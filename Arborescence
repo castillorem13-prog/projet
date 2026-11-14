@@ -19,7 +19,8 @@ learnward/
 │   └── migrations/                  # [R] Tables SQL et règles de sécurité, à lancer dans l'ordre
 │       ├── 20261102151600_create_profiles.sql   # Profil élève
 │       ├── 20261113170000_create_progress.sql   # Séances, traces d'exercices, rappels
-│       └── 20261114150000_create_homework.sql   # Devoirs importés d'ÉcoleDirecte, limite d'essais
+│       ├── 20261114150000_create_homework.sql   # Devoirs importés d'ÉcoleDirecte, limite d'essais
+│       └── 20261114160000_homework_cleanup.sql  # Efface les devoirs passés depuis plus de 30 jours
 ├── src/
 │   ├── middleware.ts                # [R] Garde l'élève connecté (rafraîchit la session Supabase)
 │   ├── app/                         # Les pages (Next.js App Router)

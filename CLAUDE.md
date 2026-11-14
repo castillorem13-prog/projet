@@ -11,7 +11,8 @@ partenaires. Détails : `README.md`, `PLAN.md`, `docs/ARCHITECTURE_PEDAGOGIQUE.m
 
 État actuel : **prototype d'interface (v8) sur données fictives, backend en cours de branchement.** L'état de l'appli est
 encore gardé dans le navigateur (`src/lib/store.tsx`, localStorage). Côté Supabase, existent déjà : les comptes, la table
-`profiles` et la sauvegarde de la progression (`/api/progress`). Reste à les brancher dans le store.
+`profiles`, la sauvegarde de la progression (`/api/progress`) et l'import des devoirs ÉcoleDirecte (`/api/homework`).
+Reste à les brancher dans le store.
 
 ## L'équipe et qui touche quoi
 
@@ -46,8 +47,8 @@ src/
 │   ├── (focus)/      pages plein écran (séance, contrôle, oral, bac…)
 │   ├── demo/         l'appli dans un cadre de téléphone / tablette
 │   ├── auth/         retour des liens envoyés par mail (connexion) — partie de Rémy
-│   └── api/          routes serveur (`/api/progress`) — partie de Rémy
-├── server/           logique serveur : vérification des données reçues — partie de Rémy
+│   └── api/          routes serveur (`/api/progress`, `/api/homework`) — partie de Rémy
+├── server/           logique serveur : vérification des données reçues, import ÉcoleDirecte — partie de Rémy
 ├── components/       composants d'interface, rangés par écran — partie de Benjamin
 ├── styles/           CSS — partie de Benjamin
 └── lib/
@@ -69,6 +70,8 @@ Les types exportés par `src/lib/` (par exemple `Profile`, `SessionResult`, `Wal
 la forme des données. **Quand le backend arrivera, il renverra des données de cette forme**, et le front n'aura qu'à
 changer d'où elles viennent. Donc :
 
+- **Devoirs importés** : contrat dans `src/lib/homework/contract.ts`, fonctions `connectEcoleDirecte()`,
+  `answerEcoleDirecte()` et `loadHomework()` dans `src/lib/homework/api.ts`.
 - **Progression** : le contrat est dans `src/lib/progress/contract.ts` (`AttemptPayload`, `ProgressSnapshot`). Le front
   appelle `saveAttempt()` à la fin d'une séance et `loadProgress()` à la connexion (`src/lib/progress/api.ts`).
 - Un changement de type partagé se fait **à deux**, dans une PR dédiée.
@@ -88,6 +91,10 @@ changer d'où elles viennent. Donc :
    points il gagne.
 5. **Les utilisateurs sont des mineurs.** Collecter le strict minimum. En dessous de 15 ans, rien sans accord
    parental. Pas de pub ciblée. Chaque table Supabase a la RLS activée : un élève ne lit que ses données.
+7. **ÉcoleDirecte (et plus tard Pronote) : aucun identifiant ni mot de passe n'est jamais stocké**, ni en base, ni dans
+   les logs, ni dans le navigateur. Ils servent le temps d'une requête, puis sont oubliés. On ne lit que le cahier de
+   textes (jamais les notes, la messagerie ou la vie scolaire). Il n'y a pas d'API officielle : tout ce qui parle à
+   ÉcoleDirecte est dans `src/server/ecoledirecte/client.ts`, c'est là qu'on répare si ÉcoleDirecte change.
 6. **Les programmes officiels** gardent leur statut de vérification (`src/lib/curriculum/sources.ts`). Ne jamais
    présenter un contenu `needs_review` ou `illustrative_mock` comme officiel.
 

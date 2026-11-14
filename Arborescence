@@ -18,7 +18,8 @@ learnward/
 ├── supabase/
 │   └── migrations/                  # [R] Tables SQL et règles de sécurité, à lancer dans l'ordre
 │       ├── 20261102151600_create_profiles.sql   # Profil élève
-│       └── 20261113170000_create_progress.sql   # Séances, traces d'exercices, rappels
+│       ├── 20261113170000_create_progress.sql   # Séances, traces d'exercices, rappels
+│       └── 20261114150000_create_homework.sql   # Devoirs importés d'ÉcoleDirecte, limite d'essais
 ├── src/
 │   ├── middleware.ts                # [R] Garde l'élève connecté (rafraîchit la session Supabase)
 │   ├── app/                         # Les pages (Next.js App Router)
@@ -27,9 +28,13 @@ learnward/
 │   │   ├── demo/                    # [B] L'appli dans un cadre de téléphone ou de tablette
 │   │   ├── auth/callback/           # [R] Retour des liens envoyés par mail (connexion, confirmation)
 │   │   ├── api/progress/            # [R] GET : recharger la progression ; POST : enregistrer une séance terminée
+│   │   ├── api/homework/            # [R] GET : devoirs importés ; ecoledirecte/ : connexion et import (mot de passe jamais gardé)
 │   │   └── test-connexion/          # [R] Page de test temporaire, à supprimer quand la vraie connexion est prête
 │   ├── server/
-│   │   └── progress.ts              # [R] Vérifie ce que l'appli envoie avant de l'écrire en base
+│   │   ├── progress.ts              # [R] Vérifie ce que l'appli envoie avant de l'écrire en base
+│   │   ├── session.ts, homework.ts  # [R] Élève connecté, lecture des devoirs
+│   │   └── ecoledirecte/            # [R] client.ts (appels ÉcoleDirecte), subjects.ts (toutes les matières),
+│   │                                #     match.ts (devoir → chapitre), import.ts
 │   ├── components/                  # [B] Composants d'interface, rangés par écran (activities, bank, screens, ui…)
 │   ├── styles/                      # [B] CSS maison (tokens.css = couleurs, tailles, espacements)
 │   └── lib/
@@ -40,6 +45,7 @@ learnward/
 │       ├── pedagogy/                # Vérification des réponses (le code corrige, jamais l'IA)
 │       ├── coach/                   # Diagnostic des erreurs, plan du jour, méthodes
 │       ├── progress/                # [B+R] Contrat de sauvegarde (contract.ts) et fonctions saveAttempt / loadProgress
+│       ├── homework/                # [B+R] Contrat des devoirs et fonctions connectEcoleDirecte / loadHomework
 │       ├── supabase/                # [R] Connexion à Supabase (client.ts navigateur, server.ts serveur)
 │       ├── points.ts                # Calcul des points (passera côté serveur en Phase 3)
 │       └── rewards.ts               # Cagnotte et récompenses

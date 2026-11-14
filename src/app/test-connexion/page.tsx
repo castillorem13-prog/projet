@@ -12,6 +12,8 @@ import { createClient } from "@/lib/supabase/client";
 import { supabaseConfigured } from "@/lib/supabase/env";
 import { loadProgress, saveAttempt } from "@/lib/progress/api";
 import type { ProgressSnapshot } from "@/lib/progress/contract";
+import { answerEcoleDirecte, connectEcoleDirecte, deviceStore, loadHomework } from "@/lib/homework/api";
+import type { Homework } from "@/lib/homework/contract";
 
 const GRADES = ["6e", "5e", "4e", "3e", "2nde", "1re", "Tle"] as const;
 
@@ -44,6 +46,12 @@ function TestConnexion() {
   const [grade, setGrade] = useState<string>("2nde");
   const [message, setMessage] = useState("");
   const [progress, setProgress] = useState<ProgressSnapshot | null>(null);
+  // ÉcoleDirecte : le mot de passe ne vit que dans cette variable, le temps de l'import, puis il est effacé.
+  const [edId, setEdId] = useState("");
+  const [edPassword, setEdPassword] = useState("");
+  const [edQuestion, setEdQuestion] = useState<{ token2fa: string; question: string; choices: { value: string; label: string }[] } | null>(null);
+  const [homework, setHomework] = useState<Homework[] | null>(null);
+  const [edBusy, setEdBusy] = useState(false);
 
   const loadProfile = useCallback(
     async (u: User | null) => {
@@ -124,6 +132,31 @@ function TestConnexion() {
     if (res.ok) setProgress(await loadProgress());
   }
 
+  async function importEcoleDirecte() {
+    setEdBusy(true);
+    const res = await connectEcoleDirecte(edId, edPassword);
+    setEdBusy(false);
+    if (res.step === "question") return setEdQuestion(res);
+    setEdQuestion(null);
+    setEdPassword("");
+    if (res.step === "error") return setMessage(`ÉcoleDirecte : ${res.error}`);
+    setHomework(res.homework);
+    setMessage(`Import réussi : ${res.imported} devoir(s), dont ${res.tests} contrôle(s) ; ${res.recognized} relié(s) à un chapitre ; ${res.reviews} rappel(s) de révision créé(s).`);
+  }
+
+  async function answer(choice: string) {
+    if (!edQuestion) return;
+    setEdBusy(true);
+    const res = await answerEcoleDirecte(edQuestion.token2fa, choice);
+    setEdBusy(false);
+    if (res.step === "error") {
+      setEdQuestion(null);
+      setEdPassword("");
+      return setMessage(`ÉcoleDirecte : ${res.error}`);
+    }
+    await importEcoleDirecte(); // on se reconnecte, cette fois avec la clé d'appareil
+  }
+
   return (
     <main style={box}>
       <h1>Test connexion (temporaire)</h1>
@@ -178,6 +211,47 @@ function TestConnexion() {
                   {progress.reviews.length} rappel{progress.reviews.length > 1 ? "s" : ""} de révision
                   {progress.reviews[0] ? ` (prochain : ${progress.reviews[0].due})` : ""}.
                 </p>
+              )}
+            </>
+          )}
+          {profile && (
+            <>
+              <h2 style={{ fontSize: 18, marginTop: 24 }}>ÉcoleDirecte</h2>
+              <p style={{ fontSize: 14 }}>Ton mot de passe ÉcoleDirecte sert une seule fois, pour lire ton cahier de textes. Il n&apos;est jamais enregistré.</p>
+              {!edQuestion ? (
+                <form onSubmit={(e) => { e.preventDefault(); void importEcoleDirecte(); }}>
+                  <div style={row}>
+                    <input style={input} placeholder="identifiant ÉcoleDirecte" autoComplete="off" value={edId} onChange={(e) => setEdId(e.target.value)} required />
+                    <input style={input} type="password" placeholder="mot de passe ÉcoleDirecte" autoComplete="off" value={edPassword} onChange={(e) => setEdPassword(e.target.value)} required />
+                  </div>
+                  <div style={row}>
+                    <button style={button} type="submit" disabled={edBusy}>{edBusy ? "Import en cours…" : "Importer mes devoirs"}</button>
+                    <button style={button} type="button" onClick={async () => setHomework(await loadHomework())}>Voir mes devoirs importés</button>
+                    <button style={button} type="button" onClick={() => { deviceStore.forget(); setMessage("Appareil oublié : la question de sécurité sera reposée."); }}>Oublier cet appareil</button>
+                  </div>
+                </form>
+              ) : (
+                <div>
+                  <p><strong>Question de sécurité :</strong> {edQuestion.question}</p>
+                  <div style={row}>
+                    {edQuestion.choices.map((c) => (
+                      <button key={c.value} style={button} type="button" disabled={edBusy} onClick={() => answer(c.value)}>{c.label}</button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {homework && (
+                <ul style={{ paddingLeft: 18, fontSize: 14 }}>
+                  {homework.length === 0 && <li>Aucun devoir à venir.</li>}
+                  {homework.map((h) => (
+                    <li key={h.id} style={{ marginBottom: 6 }}>
+                      <strong>{h.dueDate}</strong> · {h.subjectLabel}
+                      {h.isTest ? " · CONTRÔLE" : ""}
+                      {h.unitId ? ` · chapitre : ${h.unitId}` : ""}
+                      {h.text ? <div style={{ opacity: 0.8 }}>{h.text.slice(0, 120)}</div> : null}
+                    </li>
+                  ))}
+                </ul>
               )}
             </>
           )}

@@ -9,8 +9,9 @@ LearnWard, le « WeWard des devoirs » : une appli mobile-first où les élèves
 exercices adaptés à leurs passions, et gagnent des points de régularité convertibles en réductions chez des marques
 partenaires. Détails : `README.md`, `PLAN.md`, `docs/ARCHITECTURE_PEDAGOGIQUE.md`, `docs/PROTOTYPE-V8.md`.
 
-État actuel : **prototype d'interface (v8), données fictives, aucun backend.** L'état est gardé dans le navigateur
-(`src/lib/store.tsx`, localStorage). Le backend (Supabase) arrive en Phase 1.
+État actuel : **prototype d'interface (v8) sur données fictives, backend en cours de branchement.** L'état de l'appli est
+encore gardé dans le navigateur (`src/lib/store.tsx`, localStorage). Côté Supabase, existent déjà : les comptes, la table
+`profiles` et la sauvegarde de la progression (`/api/progress`). Reste à les brancher dans le store.
 
 ## L'équipe et qui touche quoi
 
@@ -34,8 +35,7 @@ Ne modifie pas les dossiers de l'autre personne sans qu'elle soit prévenue.
 
 N'ajoute **aucune nouvelle bibliothèque** (`npm install …`) sans le dire clairement et expliquer pourquoi.
 
-Note : `AGENTS.md` a été généré pour Next.js 16 lors de la création initiale du projet. Le projet tourne en
-Next.js 15.5, ses consignes ne s'appliquent pas.
+Note : `AGENTS.md` renvoie vers ce fichier, pour les IA qui lisent `AGENTS.md` plutôt que `CLAUDE.md`.
 
 ## Organisation du code
 
@@ -45,7 +45,9 @@ src/
 │   ├── (app)/        pages avec la navigation (accueil, réviser, explorer, cagnotte, moi…)
 │   ├── (focus)/      pages plein écran (séance, contrôle, oral, bac…)
 │   ├── demo/         l'appli dans un cadre de téléphone / tablette
-│   └── api/          (à venir) routes serveur — partie de Rémy
+│   ├── auth/         retour des liens envoyés par mail (connexion) — partie de Rémy
+│   └── api/          routes serveur (`/api/progress`) — partie de Rémy
+├── server/           logique serveur : vérification des données reçues — partie de Rémy
 ├── components/       composants d'interface, rangés par écran — partie de Benjamin
 ├── styles/           CSS — partie de Benjamin
 └── lib/
@@ -54,9 +56,11 @@ src/
     ├── curriculum/   programmes officiels, niveaux, unités
     ├── learning/     maîtrise et rappels
     ├── pedagogy/     vérification des réponses
+    ├── supabase/     connexion à Supabase (navigateur et serveur)
+    ├── progress/     contrat et fonctions de sauvegarde de la progression
     ├── rewards.ts    cagnotte et récompenses
     └── points.ts     calcul des points
-supabase/             (à venir) migrations SQL, seed, tests RLS — partie de Rémy
+supabase/migrations/  tables SQL et règles de sécurité, dans l'ordre où les lancer — partie de Rémy
 ```
 
 ## Le contrat front / back

@@ -1,45 +1,46 @@
+Arborescence de LearnWard (état réel du projet, mise à jour du 14/11/2026)
+Le plan d'origine prévoyait Tailwind, shadcn/ui et des dossiers src/domains/ : le projet a finalement suivi la V8 de
+Benjamin (CSS maison) et range le back dans src/server/ et src/app/api/. Règles complètes : CLAUDE.md.
+[B] = Benjamin (front)   [R] = Rémy (back)   [B+R] = types partagés, à modifier à deux
+
 learnward/
-├── CLAUDE.md                        # Instructions système & règles d'architecture (lu par Claude Code)
+├── CLAUDE.md                        # Règles du projet pour les IA (lu par Claude Code)
+├── AGENTS.md                        # Renvoie vers CLAUDE.md (pour Codex, Copilot, Cursor…)
+├── PLAN.md                          # Les phases du projet et qui fait quoi
+├── README.md                        # Présentation et commandes Git
+├── CHANGELOG.md                     # Historique des versions de l'interface
+├── .env.example                     # Noms des clés Supabase, sans les valeurs (.env.local reste sur ton PC)
 ├── docs/
-│   └── CONTEXT_PROMPT.md            # Résumé des contrats de données à coller dans ChatGPT
-├── public/
-│   └── manifest.json                # Configuration PWA mobile-first
+│   ├── ARCHITECTURE_PEDAGOGIQUE.md  # Comment l'appli fait apprendre (maîtrise, rappels, méthodes)
+│   └── PROTOTYPE-V8.md              # Présentation détaillée de l'interface V8
+├── public/                          # [B] Icône et manifest.json (appli installable sur téléphone)
+├── scripts/                         # [B] Génération et vérification de la banque (catalogue, faits, codes Python)
 ├── supabase/
-│   ├── config.toml
-│   ├── migrations/                  # Schéma SQL versionné (users, consents, point_ledger, etc.)
-│   ├── seed.sql                     # Notions officielles (4e/3e/2nde) et templates déterministes
-│   └── tests/                       # Tests pgTAP pour vérifier les règles RLS
+│   └── migrations/                  # [R] Tables SQL et règles de sécurité, à lancer dans l'ordre
+│       ├── 20261102151600_create_profiles.sql   # Profil élève
+│       └── 20261113170000_create_progress.sql   # Séances, traces d'exercices, rappels
 ├── src/
-│   ├── app/                         # Frontend PWA & Routing (Next.js App Router)
-│   │   ├── (auth)/                  # Onboarding élève & validation parentale
-│   │   ├── (student)/               # Dashboard élève, lecteur d'exercices, catalogue
-│   │   ├── (parent)/                # Espace parent & gestion des consentements RGPD
-│   │   └── api/                     # Endpoints métier (validation Zod + appels aux domaines)
-│   │       ├── exercises/           # POST /api/exercises & GET /api/exercises/[id]
-│   │       ├── sessions/            # POST /api/sessions/[id]/answers & /complete
-│   │       ├── progress/            # GET /api/progress
-│   │       ├── rewards/             # GET /api/rewards
-│   │       └── parent/consents/     # POST /api/parent/consents
-│   ├── domains/                     # Cœur métier (100% serveur, indépendant de l'UI)
-│   │   ├── ai-adapter/              # Interface unique vers Gemini / OpenAI / Anthropic + suivi des coûts
-│   │   ├── pedagogy/                # Orchestrateur, templates d'exos et validation déterministe (maths/physique)
-│   │   ├── points/                  # Calcul serveur, idempotence et écriture append-only dans point_ledger
-│   │   ├── consents/                # Logique RGPD (minorité < 15 ans, versionning des textes)
-│   │   └── school-connector/        # (Isolé / Phase 4) Futur connecteur Pronote/ÉcoleDirecte désactivable
-│   ├── components/
-│   │   ├── ui/                      # Composants atomiques (shadcn/ui + Tailwind)
-│   │   ├── exercise-player/         # Interface interactive des séances (QCM, indices, explications)
-│   │   └── layout/                  # Navigation mobile-first PWA
-│   ├── lib/
-│   │   ├── supabase/                # Clients Supabase (Browser, Server, Service Role protégé)
-│   │   ├── schemas/                 # Contrats Zod partagés (LE pont entre Claude et ChatGPT)
-│   │   ├── security/                # Rate-limiting, clés d'idempotence, logs d'audit
-│   │   └── utils.ts
-│   └── types/
-│       └── database.types.ts        # Types générés automatiquement par Supabase CLI
-├── tests/
-│   ├── unit/                        # Tests Vitest (vérificateur mathématique, calcul des points)
-│   └── e2e/                         # Tests Playwright (parcours élève/parent)
-├── next.config.ts
-├── package.json
-└── tsconfig.json
+│   ├── middleware.ts                # [R] Garde l'élève connecté (rafraîchit la session Supabase)
+│   ├── app/                         # Les pages (Next.js App Router)
+│   │   ├── (app)/                   # [B] Pages avec la navigation : accueil, réviser, explorer, cagnotte, progrès, moi…
+│   │   ├── (focus)/                 # [B] Pages plein écran : séance, cours, entraînement, contrôle, oral, bac…
+│   │   ├── demo/                    # [B] L'appli dans un cadre de téléphone ou de tablette
+│   │   ├── auth/callback/           # [R] Retour des liens envoyés par mail (connexion, confirmation)
+│   │   ├── api/progress/            # [R] GET : recharger la progression ; POST : enregistrer une séance terminée
+│   │   └── test-connexion/          # [R] Page de test temporaire, à supprimer quand la vraie connexion est prête
+│   ├── server/
+│   │   └── progress.ts              # [R] Vérifie ce que l'appli envoie avant de l'écrire en base
+│   ├── components/                  # [B] Composants d'interface, rangés par écran (activities, bank, screens, ui…)
+│   ├── styles/                      # [B] CSS maison (tokens.css = couleurs, tailles, espacements)
+│   └── lib/
+│       ├── store.tsx                # [B+R] État de l'appli (aujourd'hui dans le navigateur, bientôt synchronisé)
+│       ├── content/                 # [B] Séances, examens, passions, banque de cours et d'exercices (bank/)
+│       ├── curriculum/              # [B+R] Programmes officiels, niveaux, chapitres, types Evidence et Review
+│       ├── learning/                # Maîtrise et rappels espacés
+│       ├── pedagogy/                # Vérification des réponses (le code corrige, jamais l'IA)
+│       ├── coach/                   # Diagnostic des erreurs, plan du jour, méthodes
+│       ├── progress/                # [B+R] Contrat de sauvegarde (contract.ts) et fonctions saveAttempt / loadProgress
+│       ├── supabase/                # [R] Connexion à Supabase (client.ts navigateur, server.ts serveur)
+│       ├── points.ts                # Calcul des points (passera côté serveur en Phase 3)
+│       └── rewards.ts               # Cagnotte et récompenses
+└── tests/                           # Tests automatiques (npm test) : contenu, banque, store, progression…

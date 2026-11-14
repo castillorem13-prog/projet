@@ -1,15 +1,22 @@
 # Learnward — Plan du projet et répartition
 
-*Dernière mise à jour : 29/10/2026*
+*Dernière mise à jour : 14/11/2026*
+
+## Où on en est
+
+- **Phase 0 : terminée.** Projet Next.js (V8 de Benjamin), Supabase créé à Paris, règles communes dans `CLAUDE.md`.
+- **Phase 1 : presque finie.** Connexion (mot de passe ou lien par mail) et table `profiles` prêtes côté back ; reste la vraie page de connexion (Benjamin).
+- **Phase 2 : bien avancée.** Banque de cours et d'exercices vérifiés (Benjamin) ; sauvegarde de la progression dans Supabase (Rémy). Reste à brancher la sauvegarde dans l'appli, ensemble.
+- **Décisions prises en route** : on commence par le **lycée** (tests avec de vrais élèves), CSS maison au lieu de Tailwind, contenus pédagogiques dans le code et pas en base. Détail des tables : doc « Proposition de base de données ».
 
 ## Avant de commencer : 4 décisions à prendre ensemble
 
 Ce plan suit l'arborescence actuelle (Next.js + TypeScript + Supabase). Si vous changez de langage, les phases restent les mêmes, seuls les outils changent.
 
-- [ ] **Langage** : TypeScript avec Next.js (comme l'arborescence) ou Python ? À trancher avant d'écrire la moindre ligne.
-- [ ] **Comptes à créer** (gratuits) : Supabase (base de données + connexion), Vercel (mise en ligne), et une clé d'API d'**une seule** IA pour commencer (Gemini, OpenAI ou Anthropic).
-- [ ] **Qui est Personne A et qui est Personne B** (voir la répartition juste en dessous).
-- [ ] **Périmètre de la première version (MVP)** : une seule matière et un seul niveau pour commencer, par exemple les maths de 4e. Tout le reste vient après.
+- [x] **Langage** : TypeScript avec Next.js (comme l'arborescence) ou Python ? À trancher avant d'écrire la moindre ligne.
+- [ ] **Comptes à créer** (gratuits) : Supabase (base de données + connexion), Vercel (mise en ligne), et une clé d'API d'**une seule** IA pour commencer (Gemini, OpenAI ou Anthropic). → Supabase ✅, Vercel et IA : pas encore.
+- [x] **Qui est Personne A et qui est Personne B** (voir la répartition juste en dessous). → **A = Rémy (branche `RC`), B = Benjamin (branche `BB`).**
+- [x] **Périmètre de la première version (MVP)** : une seule matière et un seul niveau pour commencer, par exemple les maths de 4e. Tout le reste vient après. → **Choix : le lycée.**
 
 Pourquoi un MVP aussi réduit : l'arborescence décrit une grosse appli (RGPD, points, espace parent, plusieurs IA, Pronote). À deux et en apprenant, viser tout d'un coup est le meilleur moyen de ne jamais rien finir. Une version simple qui marche vaut mieux qu'une version complète à moitié codée.
 
@@ -34,21 +41,21 @@ Objectif : un projet Next.js vide qui démarre chez vous deux, relié à Supabas
 
 **Ensemble**
 
-- [ ] Installer Node.js (version LTS) chacun, vérifier `node -v` et `npm -v`
-- [ ] Remplacer le `.gitignore` Python par celui de Next.js (fait par RC)
-- [ ] Écrire `CLAUDE.md` : les règles du projet que l'IA doit respecter (langage, structure, conventions)
+- [x] Installer Node.js (version LTS) chacun, vérifier `node -v` et `npm -v`
+- [x] Remplacer le `.gitignore` Python par celui de Next.js (fait par RC)
+- [x] Écrire `CLAUDE.md` : les règles du projet que l'IA doit respecter (langage, structure, conventions)
 
 **Personne A**
 
-- [ ] Créer le projet Next.js **une seule fois** sur sa branche, puis PR vers `main`
-- [ ] Créer le projet Supabase, noter les clés dans `.env.local` (jamais sur GitHub)
-- [ ] Créer un `.env.example` avec les noms des variables, sans les valeurs, pour que B sache quoi remplir
+- [x] Créer le projet Next.js **une seule fois** sur sa branche, puis PR vers `main`
+- [x] Créer le projet Supabase, noter les clés dans `.env.local` (jamais sur GitHub)
+- [x] Créer un `.env.example` avec les noms des variables, sans les valeurs, pour que B sache quoi remplir
 
 **Personne B**
 
-- [ ] Une fois la PR de A mergée : récupérer `main`, lancer `npm install` puis `npm run dev`, vérifier que la page s'affiche
-- [ ] Installer Tailwind et shadcn/ui (souvent proposés à la création du projet)
-- [ ] Créer `public/manifest.json` (nom de l'appli, icône, couleurs) pour la version mobile
+- [x] Une fois la PR de A mergée : récupérer `main`, lancer `npm install` puis `npm run dev`, vérifier que la page s'affiche
+- [x] ~~Installer Tailwind et shadcn/ui~~ → abandonné : la V8 a son propre CSS (`src/styles/`)
+- [x] Créer `public/manifest.json` (nom de l'appli, icône, couleurs) pour la version mobile
 
 **C'est fini quand** : `npm run dev` affiche la page d'accueil chez vous deux, et personne n'a de clé secrète dans GitHub.
 
@@ -58,22 +65,22 @@ Objectif : un élève peut créer un compte, se connecter et arriver sur un tabl
 
 **Ensemble**
 
-- [ ] Lister les tables de la base : `users`, `notions`, `exercises`, `sessions`, `answers`, `point_ledger`, `consents`… et ce que contient chacune
-- [ ] Écrire les premiers schémas Zod (utilisateur, profil élève)
+- [x] Lister les tables de la base : `users`, `notions`, `exercises`, `sessions`, `answers`, `point_ledger`, `consents`… et ce que contient chacune
+- [x] ~~Écrire les premiers schémas Zod~~ → on réutilise les types de la V8 (`Profile`…), vérifiés côté serveur
 
 **Personne A**
 
-- [ ] Écrire la première migration SQL dans `supabase/migrations/`
-- [ ] Activer les règles RLS : un élève ne voit que **ses** données
-- [ ] Créer les clients Supabase dans `src/lib/supabase/` (navigateur, serveur)
+- [x] Écrire la première migration SQL dans `supabase/migrations/`
+- [x] Activer les règles RLS : un élève ne voit que **ses** données
+- [x] Créer les clients Supabase dans `src/lib/supabase/` (navigateur, serveur), + connexion par mot de passe ou lien mail
 - [ ] Générer `database.types.ts` avec la CLI Supabase
 
 **Personne B**
 
 - [ ] Pages d'inscription et de connexion dans `src/app/(auth)/`
-- [ ] La navigation mobile (barre du bas) dans `src/components/layout/`
-- [ ] Un tableau de bord élève vide dans `src/app/(student)/`
-- [ ] Choisir les couleurs et la police de l'appli
+- [x] La navigation mobile (barre du bas) dans `src/components/layout/`
+- [x] Un tableau de bord élève vide dans `src/app/(student)/`
+- [x] Choisir les couleurs et la police de l'appli
 
 **C'est fini quand** : vous pouvez chacun créer un compte de test, vous connecter, et voir le tableau de bord sur votre téléphone.
 
@@ -83,23 +90,23 @@ Objectif : un élève choisit une notion, fait une séance de QCM, reçoit une c
 
 **Ensemble**
 
-- [ ] Choisir 5 à 10 notions de maths de 4e pour démarrer (dans `supabase/seed.sql`)
-- [ ] Schémas Zod : `Exercise`, `Session`, `Answer`, `Correction`
-- [ ] Décider la règle d'or : **l'IA rédige l'énoncé, mais c'est le code qui vérifie la réponse**. Une IA peut se tromper en maths, le code non.
+- [x] ~~Choisir 5 à 10 notions de maths de 4e~~ → la banque de Benjamin couvre tout le programme, dans le code (`src/lib/content/bank/`)
+- [x] Contrat de sauvegarde : `AttemptPayload` et `ProgressSnapshot` (`src/lib/progress/contract.ts`)
+- [x] Décider la règle d'or : **l'IA rédige l'énoncé, mais c'est le code qui vérifie la réponse**. Une IA peut se tromper en maths, le code non.
 
 **Personne A**
 
-- [ ] `src/domains/pedagogy/` : des modèles d'exercices avec des nombres tirés au hasard et une vérification calculée par le code
+- [x] Modèles d'exercices avec des nombres tirés au hasard et une vérification par le code → fait par Benjamin dans la banque (1 378 générateurs testés)
 - [ ] `src/domains/ai-adapter/` : une seule fonction qui appelle l'IA choisie (énoncés, indices, explications), avec un compteur de coût
-- [ ] Les routes `POST /api/exercises`, `GET /api/exercises/[id]`, `POST /api/sessions/[id]/answers`, `/complete`
-- [ ] Tests Vitest du vérificateur de réponses
+- [x] ~~Routes par exercice~~ → une seule route `/api/progress` : enregistrer une séance terminée, recharger la progression
+- [x] Tests du vérificateur de réponses et de la sauvegarde (`npm test`)
 
 **Personne B**
 
-- [ ] Le catalogue des notions dans `src/app/(student)/`
-- [ ] Le lecteur d'exercices dans `src/components/exercise-player/` : question, choix du QCM, bouton indice, correction expliquée
-- [ ] L'écran de fin de séance (score, erreurs)
-- [ ] Brancher tout ça sur les vraies routes de A
+- [x] Le catalogue des notions dans `src/app/(student)/`
+- [x] Le lecteur d'exercices dans `src/components/exercise-player/` : question, choix du QCM, bouton indice, correction expliquée
+- [x] L'écran de fin de séance (score, erreurs)
+- [ ] Brancher tout ça sur les vraies routes de A (`saveAttempt()` / `loadProgress()` dans `store.tsx`, à faire ensemble)
 
 **C'est fini quand** : vous faites chacun une séance complète de 10 questions sans bug, et aucune correction n'est fausse.
 
@@ -131,7 +138,7 @@ Objectif : l'élève gagne des points en fin de séance et voit sa progression p
 
 Objectif : un parent valide l'inscription de son enfant et peut voir ou retirer son accord. **Obligatoire avant d'ouvrir l'appli à de vrais élèves**, pas avant.
 
-Pourquoi : vos utilisateurs sont des collégiens. En France, en dessous de 15 ans, l'accord d'un parent est nécessaire pour traiter les données d'un enfant en ligne. Lisez les recommandations de la CNIL sur les mineurs avant de lancer cette phase.
+Pourquoi : vos utilisateurs sont des collégiens et des lycéens. On commence par le lycée, donc surtout des 15 ans et plus : cette phase devient indispensable dès qu'on ouvre aux collégiens. En France, en dessous de 15 ans, l'accord d'un parent est nécessaire pour traiter les données d'un enfant en ligne. Lisez les recommandations de la CNIL sur les mineurs avant de lancer cette phase.
 
 **Ensemble**
 

@@ -1,9 +1,12 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# AGENTS.md
 
-## This is NOT the Next.js you know
+Les règles du projet LearnWard sont dans **[CLAUDE.md](CLAUDE.md)** : lis-le en entier avant de toucher au code.
+Ce fichier existe pour les outils qui cherchent `AGENTS.md` (Codex, Copilot, Cursor…) : les consignes sont les mêmes
+pour toutes les IA.
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
+En bref :
+- Next.js **15.5** (App Router), React 19, TypeScript strict, CSS maison (pas de Tailwind).
+- Rémy (`RC`) = back : `supabase/`, `src/app/api/`, `src/server/`. Benjamin (`BB`) = front : pages, `src/components/`,
+  `src/styles/`. Les types partagés de `src/lib/` se modifient à deux.
+- Aucun secret dans le code, aucune bibliothèque ajoutée sans le dire, points calculés côté serveur.
+- Avant une PR : `npm run typecheck` et `npm test` doivent passer.

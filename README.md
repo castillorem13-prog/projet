@@ -156,7 +156,7 @@ git push
 
 ## Banque de cours et d'exercices
 
-Un cours par unité du programme et des exercices fabriqués et vérifiés par le code (`src/lib/content/bank/`).
+Un cours et un entraînement pour chacune des 555 unités du programme : 3 805 générateurs, 761 000 exercices fabriqués et vérifiés par le code (`src/lib/content/bank/`).
 Les règles sont dans `docs/ARCHITECTURE_PEDAGOGIQUE.md` (partie 14).
 
 ```bash

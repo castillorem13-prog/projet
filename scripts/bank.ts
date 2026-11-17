@@ -1,7 +1,6 @@
 import { mkdirSync, writeFileSync } from "node:fs";
-import { FACT_SETS, GENERATORS, LESSON_SETS, SEEDS } from "../src/lib/content/bank";
+import { FACT_SETS, GENERATORS, LESSON_SETS, SEEDS, signature } from "../src/lib/content/bank";
 import { GENERATOR_LIST } from "../src/lib/content/bank/generators";
-import type { Activity } from "../src/lib/content/types";
 import { findUnit, UNITS } from "../src/lib/curriculum";
 
 /**
@@ -14,23 +13,6 @@ import { findUnit, UNITS } from "../src/lib/curriculum";
 const args = process.argv.slice(2);
 const exportIndex = args.indexOf("--export");
 const perGenerator = exportIndex >= 0 ? Number(args[exportIndex + 1] ?? 5) : 0;
-
-/** Ce qui distingue vraiment deux exercices : l'énoncé, la réponse et l'ensemble des choix, sans leur ordre d'affichage. */
-function signature(a: Activity): string {
-  switch (a.kind) {
-    case "mcq":
-    case "worked":
-      return JSON.stringify([a.prompt, a.options[a.correct]!.text, a.options.map((o) => String(o.text)).sort()]);
-    case "order":
-      return JSON.stringify([a.prompt, a.steps]);
-    case "classify":
-      return JSON.stringify([a.prompt, a.items.map((i) => `${String(i.text)}=${i.category}`).sort()]);
-    case "problem":
-      return JSON.stringify([a.context, a.stimulus ?? null, a.parts.map((p) => [p.prompt, p.answer.expected])]);
-    default:
-      return JSON.stringify({ ...a, id: "" });
-  }
-}
 
 const computed = new Set(GENERATOR_LIST.map((g) => g.id));
 let distinct = 0;

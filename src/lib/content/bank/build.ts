@@ -4,6 +4,8 @@ import type {
   BarModel,
   ClassifyActivity,
   CompetenceId,
+  Curve,
+  GraphActivity,
   McqActivity,
   NumericPart,
   OrderActivity,
@@ -210,6 +212,33 @@ export function ask(c: Omit<Common, "solution"> & Omit<PartSpec, "hint" | "revie
   });
 }
 
+export interface CurveChoice {
+  curve: Curve;
+  feedback: string;
+}
+
+/** Choix de courbe : la bonne représentation est placée au hasard (graine) ; deux courbes identiques ne sont jamais proposées. */
+export function graph(
+  r: Rng,
+  c: Common & { prompt: string; xLabel?: string; yLabel?: string; domain: [number, number]; range: [number, number]; answer: CurveChoice; wrong: CurveChoice[]; count?: number },
+): GraphActivity {
+  const seen = new Set([JSON.stringify(c.answer.curve)]);
+  const wrong: CurveChoice[] = [];
+  for (const w of c.wrong) {
+    const key = JSON.stringify(w.curve);
+    if (seen.has(key) || wrong.length >= (c.count ?? 4) - 1) continue;
+    seen.add(key);
+    wrong.push(w);
+  }
+  const options = r.shuffle([c.answer, ...wrong]);
+  return { kind: "graph", ...base(c), prompt: c.prompt, xLabel: c.xLabel ?? "x", yLabel: c.yLabel ?? "y", domain: c.domain, range: c.range, options, correct: options.indexOf(c.answer) };
+}
+
+/** Frise construite pour l'exercice à partir de repères sourcés (les dates viennent des faits de la banque). */
+export function timeline(title: string, events: { date: string; label: string }[]): Stimulus {
+  return { kind: "timeline", title, events, provenance: { authentic: false, type: "Frise construite pour l'exercice à partir des repères du chapitre", verification: "needs_review" } };
+}
+
 /** Document fabriqué pour l'exercice (tableau de données fictives), signalé comme tel. */
 export function mockTable(title: string, columns: string[], rows: string[][]): Stimulus {
   return { kind: "table", title, columns, rows, provenance: { authentic: false, type: "Données fictives écrites pour l'exercice", verification: "illustrative_mock" } };
@@ -241,13 +270,14 @@ export function worked(r: Rng, c: Common & { prompt: string; steps: { text: stri
 }
 
 /** Déclare un générateur : chaque graine donne un exercice et sa contre-épreuve. */
-export function gen(def: { id: string; unit: string; title: string; stage: Stage; make: (r: Rng, id: string) => Generated }): Generator {
+export function gen(def: { id: string; unit: string; title: string; stage: Stage; capacity?: number; make: (r: Rng, id: string) => Generated }): Generator {
   const salt = hash(def.id);
   return {
     id: def.id,
     unitId: def.unit,
     title: def.title,
     stage: def.stage,
+    ...(def.capacity !== undefined ? { capacity: def.capacity } : {}),
     make: (seed) => def.make(rng(salt + seed * 2654435761), `${def.id}~${seed}`),
   };
 }

@@ -62,6 +62,13 @@ function problems(a: Activity, code: boolean): string[] {
       if (a.kind === "worked" && !a.steps[a.blank]) out.push("étape à compléter introuvable");
       break;
     }
+    case "graph":
+      if (a.options.length < 3) out.push("moins de trois courbes");
+      if (!a.options[a.correct]) out.push("bonne courbe hors des choix");
+      if (new Set(a.options.map((o) => JSON.stringify(o.curve))).size !== a.options.length) out.push("courbes en double");
+      if (a.options.some((o) => o.feedback.trim().length < 5)) out.push("retour manquant sur une courbe");
+      if (a.domain[0] >= a.domain[1] || a.range[0] >= a.range[1]) out.push("fenêtre du graphique invalide");
+      break;
     case "order":
       if ([...a.display].sort((x, y) => x - y).join() !== a.steps.map((_, i) => i).join()) out.push("ordre d'affichage invalide");
       if (a.display.every((v, i) => v === i)) out.push("déjà dans l'ordre");
@@ -114,7 +121,9 @@ describe("Banque : générateurs", () => {
         assert.deepEqual(g.make(seed).activity, activity, `${g.id}#${seed} : la même graine doit redonner le même exercice`);
         seen.add(JSON.stringify({ ...activity, id: "" }));
       }
-      assert.ok(seen.size >= Math.min(8, SEEDS), `${g.id} : seulement ${seen.size} exercices différents`);
+      // Une liste fermée (les trois dates clés d'un chapitre) annonce sa taille : on exige alors tous ses exercices.
+      assert.ok(g.capacity === undefined || g.capacity >= 1, `${g.id} : capacité invalide`);
+      assert.ok(seen.size >= Math.min(8, SEEDS, g.capacity ?? 8), `${g.id} : seulement ${seen.size} exercices différents`);
     });
   }
 });

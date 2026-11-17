@@ -321,7 +321,9 @@ rédige, le code vérifie**. Aucun exercice n'entre dans la banque sans une cont
 | --- | --- | --- |
 | Générateurs calculés (maths, physique-chimie, numérique, SES, conjugaison et accords) | `generators/*.ts` | Chaque générateur fabrique un exercice à partir d'une graine et une fonction `verify()` qui recalcule la réponse par un autre chemin (substitution, opération inverse, relecture de l'expression affichée, énumération, conservation des atomes…). Les codes Python affichés sont exécutés par un vrai Python (`npm run bank:python`). |
 | Faits sourcés (dates, notions, œuvres, personnages, vocabulaire, classements) | `facts/*.ts` | Chaque lot cite ses sources ; les tests refusent les doublons qui rendraient un QCM ambigu. Dates et œuvres sont recoupées avec Wikidata (`npm run bank:faits`, résultat dans `facts/verification.generated.ts`). |
-| Exercices tirés des faits | `from-facts.ts` | Écrits par le code à partir des faits : dater, reconnaître, remettre dans l'ordre, retrouver l'auteur, traduire, classer. Les distracteurs viennent du même lot. |
+| Exercices tirés des faits | `from-facts.ts` | Écrits par le code à partir des faits, sous plusieurs formes pour un même fait : choisir, écrire une date, situer dans un siècle, calculer une durée sur une frise, ranger, dire vrai ou faux, associer, trouver l'intrus. Les pièges viennent du même lot (pour une date, les repères les plus proches dans le temps) ; la contre-épreuve relit la table des faits. |
+| Grammaire | `generators/grammaire.ts` | Phrases à trou en anglais, espagnol, allemand et français (conjugaison, accords), une banque par point de grammaire du cours, chaque piège expliqué. Une phrase n'y entre que si aucun piège n'y est acceptable, même dans un usage familier ou régional. |
+| Compléments | `facts/complements.ts`, `generators/plus-*.ts` | Faits rattachés à d'autres unités où ils sont au programme, lots ajoutés (méthode en français, humanités) et exercices calculés supplémentaires : chaque unité du programme a désormais un entraînement. |
 | Cours, un par unité | `lessons/*.ts` | Structure (introduction, blocs, pièges, à retenir), propreté de l'écriture, et calculs des exemples recalculés (`checks`). |
 
 **Règles.**
@@ -329,6 +331,10 @@ rédige, le code vérifie**. Aucun exercice n'entre dans la banque sans une cont
 - `SEEDS = 200` : l'appli ne montre que les graines 0 à 199 et **les tests vérifient chacune d'elles**, pour chaque
   générateur (bonne réponse acceptée, erreurs classiques refusées, trois indices différents, au moins trois choix
   distincts, pas de « 1x », de « − −3 », de point décimal, ni de mot de marque).
+- Un générateur produit au moins huit exercices différents ; une liste fermée (les trois dates clés d'un chapitre)
+  le déclare avec `capacity`, et les tests exigent alors tous ses exercices.
+- L'entraînement prépare cinq séries de huit par chapitre (`practicePool`) : les formes d'exercices y sont mêlées et
+  deux exercices qui ne diffèrent que par l'ordre des choix comptent pour un seul (`signature`).
 - Une réponse chiffrée a au plus six décimales, ou une tolérance déclarée ; le correcteur est `checkAnswer`
   (`src/lib/pedagogy/answer-checker.ts`), le même que pour les séances.
 - Les écrans n'importent pas la banque : `/cours/[unit]` et `/entrainement/[unit]` sont générées à la construction,

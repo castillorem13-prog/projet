@@ -1,4 +1,4 @@
-import { AlertTriangle, ArrowRight, BookOpen, ExternalLink, Lightbulb, ListChecks, X } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, BookOpen, ExternalLink, Lightbulb, ListChecks, X } from "lucide-react";
 import Link from "next/link";
 import { FocusPage } from "@/components/ui/focus-page";
 import { SubjectChip } from "@/components/ui/subject-icon";
@@ -18,7 +18,9 @@ const STATUS_NOTE: Record<string, string> = {
 };
 
 /** Fiche de cours d'une unité : rendue sur le serveur, sans JavaScript côté élève. */
-export function LessonScreen({ unit, lesson, set, source, practice }: { unit: Unit; lesson: Lesson; set: LessonSet; source?: CurriculumSource; practice: number }) {
+type Neighbour = { id: string; title: string };
+
+export function LessonScreen({ unit, lesson, set, source, practice, prev, next }: { unit: Unit; lesson: Lesson; set: LessonSet; source?: CurriculumSource; practice: number; prev?: Neighbour; next?: Neighbour }) {
   return (
     <FocusPage
       className="lesson-page"
@@ -77,6 +79,23 @@ export function LessonScreen({ unit, lesson, set, source, practice }: { unit: Un
             {lesson.remember.map((p) => <li key={p}>{nb(p)}</li>)}
           </ul>
         </section>
+
+        {prev || next ? (
+          <nav className="lesson-nav" aria-label="Autres chapitres">
+            {prev ? (
+              <Link href={`/cours/${prev.id}`} className="lesson-nav-link">
+                <ArrowLeft size={18} strokeWidth={2.6} aria-hidden="true" />
+                <span><span className="muted small">Chapitre précédent</span><strong>{nb(prev.title)}</strong></span>
+              </Link>
+            ) : <span />}
+            {next ? (
+              <Link href={`/cours/${next.id}`} className="lesson-nav-link is-next">
+                <span><span className="muted small">Chapitre suivant</span><strong>{nb(next.title)}</strong></span>
+                <ArrowRight size={18} strokeWidth={2.6} aria-hidden="true" />
+              </Link>
+            ) : null}
+          </nav>
+        ) : null}
 
         <footer className="lesson-source">
           <p>{STATUS_NOTE[set.status]}</p>

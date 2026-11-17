@@ -78,6 +78,11 @@ const ARTICLES: Record<string, string> = {
   "a-incendie": "Grand incendie de Rome", "a-salamine": "Bataille de Salamine", "a-peloponnese": "Guerre du Péloponnèse", "a-alexandre": "Alexandre le Grand", "a-marathon": "Bataille de Marathon",
   "a-jo": "Jeux olympiques antiques", "e-jo1896": "Jeux olympiques d'été de 1896", "e-tour": "Tour de France 1903", "e-jo1924": "Jeux olympiques d'été de 1924",
   "e-coupe-monde": "Coupe du monde de football 1930", "e-paralympiques": "Jeux paralympiques d'été de 1960", "e-jo2024": "Jeux olympiques d'été de 2024",
+  /* Compléments (facts/complements.ts) */
+  "hx-gazette": "La Gazette", "hx-afp": "Agence France-Presse", "hx-watergate": "Scandale du Watergate", "hx-loi-1913": "Loi du 31 décembre 1913 sur les monuments historiques",
+  "hx-journees": "Journées européennes du patrimoine", "hx-bamiyan": "Bouddhas de Bâmiyân", "hx-incendie-nd": "Incendie de Notre-Dame de Paris", "hx-royal-society": "Royal Society",
+  "hx-academie": "Académie des sciences (France)", "hx-cnrs": "Centre national de la recherche scientifique", "ad-massalia": "Massalia", "ad-carthage": "Carthage",
+  "ad-alexandrie": "Alexandrie", "ad-alesia": "Siège d'Alésia", "ad-socrate": "Procès de Socrate", "ad-catilina": "Conjuration de Catilina",
 };
 
 /** Propriétés Wikidata qui portent une date utile. */

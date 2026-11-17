@@ -38,6 +38,7 @@ export function PracticePlayer({ unitId, title, subject, pool, hasLesson }: { un
   const [results, setResults] = useState<ItemResult[][]>([]);
   const [finished, setFinished] = useState(false);
 
+  const seriesCount = Math.max(1, Math.ceil(pool.length / PER));
   const start = (round * PER) % Math.max(pool.length, 1);
   const series = [...pool.slice(start, start + PER), ...pool.slice(0, Math.max(0, start + PER - pool.length))].slice(0, Math.min(PER, pool.length));
   const activity = series[index];
@@ -94,6 +95,7 @@ export function PracticePlayer({ unitId, title, subject, pool, hasLesson }: { un
             <p className="practice-end-kicker">Entraînement</p>
             <h1 id="practice-end-title" className="display">{title}</h1>
             <p className="practice-end-stats"><span className="num">{firstTry}/{flat.length}</span> réussis du premier coup</p>
+            {seriesCount > 1 ? <p className="practice-end-next">{(round + 1) % seriesCount === 0 ? "Tu as fait le tour des séries de ce chapitre : la prochaine reprend au début." : `Série ${(round % seriesCount) + 1} sur ${seriesCount} terminée.`}</p> : null}
             <MasteryMeter state={mastery(unitId)} subject={subject} detail />
             <div className="practice-end-actions">
               <Button block onClick={again} trailing={<RotateCcw size={20} strokeWidth={2.6} />}>Une autre série</Button>
@@ -106,7 +108,10 @@ export function PracticePlayer({ unitId, title, subject, pool, hasLesson }: { un
         ) : activity ? (
           <>
             <div className="stage-row">
-              <p className="stage-bar">Entraînement<span aria-hidden="true"> · </span><strong>{title}</strong></p>
+              <p className="stage-bar">
+                Entraînement<span aria-hidden="true"> · </span><strong>{title}</strong>
+                {seriesCount > 1 ? <span className="practice-round"> · série {(round % seriesCount) + 1} sur {seriesCount}</span> : null}
+              </p>
             </div>
             <ActivityEnvContext.Provider value={ENV}>
               {activity.kind === "problem" ? (
@@ -119,7 +124,7 @@ export function PracticePlayer({ unitId, title, subject, pool, hasLesson }: { un
                 <ClassifyActivity key={activity.id} activity={activity} {...common} />
               ) : activity.kind === "worked" ? (
                 <WorkedActivity key={activity.id} activity={activity} {...common} />
-              ) : activity.kind === "mcq" ? (
+              ) : activity.kind === "mcq" || activity.kind === "graph" ? (
                 <ChoiceActivity key={activity.id} activity={activity} {...common} />
               ) : null}
             </ActivityEnvContext.Provider>

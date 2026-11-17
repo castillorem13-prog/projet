@@ -4,7 +4,7 @@ import { factGenerators } from "./from-facts";
 import { FACT_SETS } from "./facts";
 import { GENERATOR_LIST } from "./generators";
 import { LESSON_SETS } from "./lessons";
-import { hash } from "./rand";
+import { hash, rng } from "./rand";
 import type { Fact, FactSet, Generator, Lesson, LessonSet } from "./types";
 
 export type { Fact, FactSet, Generator, Lesson, LessonSet };
@@ -37,20 +37,49 @@ export const lessonSetOf = (unitId: string): LessonSet | undefined => SET_OF.get
 const RANK: Record<Stage, number> = { rappel: 0, application: 1, transfert: 2, extension: 3 };
 
 /**
+ * Ce qui distingue vraiment deux exercices : l'énoncé, la réponse et l'ensemble des choix, sans leur ordre d'affichage.
+ * Deux QCM identiques dont seuls les choix sont mélangés autrement comptent pour un seul exercice.
+ */
+export function signature(a: Activity): string {
+  switch (a.kind) {
+    case "mcq":
+    case "worked":
+      return JSON.stringify([a.kind, a.prompt, a.options[a.correct]!.text, a.options.map((o) => String(o.text)).sort()]);
+    case "graph":
+      return JSON.stringify([a.kind, a.prompt, a.options[a.correct]!.curve, a.options.map((o) => JSON.stringify(o.curve)).sort()]);
+    case "order":
+      return JSON.stringify([a.kind, a.prompt, a.steps]);
+    case "classify":
+      return JSON.stringify([a.kind, a.prompt, a.items.map((i) => `${String(i.text)}=${i.category}`).sort()]);
+    case "problem":
+      return JSON.stringify([a.kind, a.context, a.stimulus ?? null, a.parts.map((p) => [p.prompt, p.answer.expected])]);
+    default:
+      return JSON.stringify({ ...a, id: "" });
+  }
+}
+
+/** Taille d'une série d'entraînement, et nombre d'exercices préparés pour chaque chapitre (cinq séries). */
+export const SERIES = 8;
+export const POOL = 40;
+
+/**
  * Exercices d'entraînement d'une unité, par séries de `per` rangées du rappel au transfert.
  * Les graines restent dans [0, SEEDS[ : uniquement des exercices vérifiés par les tests.
+ * Les formes d'exercices sont mêlées dans un ordre fixe pour l'unité : une série ne répète pas deux fois la même forme
+ * tant qu'il en reste d'autres, et deux exercices identiques ne sont jamais proposés.
  */
-export function practicePool(unitId: string, size = 24, per = 8): Activity[] {
+export function practicePool(unitId: string, size = POOL, per = SERIES): Activity[] {
   const gens = generatorsOf(unitId);
   if (!gens.length) return [];
   const salt = hash(unitId);
+  const mixed = rng(salt).shuffle(gens);
   const seen = new Set<string>();
   const out: Activity[] = [];
-  for (let k = 0; out.length < size && k < size * 4; k++) {
-    const g = gens[k % gens.length]!;
+  for (let k = 0; out.length < size && k < size * 6; k++) {
+    const g = mixed[k % mixed.length]!;
     const seed = (salt + k * 7919) % SEEDS;
     const a = g.make(seed).activity;
-    const key = JSON.stringify({ ...a, id: "" });
+    const key = signature(a);
     if (seen.has(key)) continue;
     seen.add(key);
     out.push(a);

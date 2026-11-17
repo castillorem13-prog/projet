@@ -23,6 +23,11 @@ export interface Generator {
   /** Ce que l'exercice fait travailler (« Comparer deux décimaux »). */
   title: string;
   stage: Stage;
+  /**
+   * Nombre d'exercices différents possibles quand il est petit (liste fermée : les trois dates clés d'un chapitre).
+   * Absent : le générateur en produit au moins huit, ce que les tests vérifient.
+   */
+  capacity?: number;
   /** La même graine donne toujours le même exercice. */
   make: (seed: number) => Generated;
 }

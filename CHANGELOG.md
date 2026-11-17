@@ -1,5 +1,34 @@
 # Journal des corrections
 
+## Banque, deuxième passe : des exercices plus variés, partout
+
+Chaque unité du programme a désormais son entraînement, et chaque chapitre mêle plusieurs formes d'exercices.
+
+| Avant | Après |
+| --- | --- |
+| 490 unités sur 555 avec un entraînement | **555 sur 555** |
+| 1 378 générateurs | **3 805** (595 écrits en code, dont 218 de grammaire, et 3 210 tirés des faits) |
+| 275 600 exercices vérifiés, dont 153 401 différents | **761 000** vérifiés un par un, dont **407 991** différents |
+| 1 512 faits sourcés | **1 861** |
+| 1 400 programmes Python exécutés | **2 000**, tous justes |
+| Séries de QCM surtout | Choisir, écrire, classer, associer, vrai ou faux, intrus, frise, courbe, ordre |
+
+- **Exercices tirés des faits** (`from-facts.ts`, réécrit) : un même fait se travaille sous plusieurs formes (dater,
+  situer dans un siècle, calculer une durée sur une frise, repérer le plus ancien, vrai ou faux, associer, trouver
+  l'intrus). Les pièges d'une date sont les repères les plus proches dans le temps, et non plus des dates au hasard.
+- **Grammaire** (`generators/grammaire.ts`) : phrases à trou en anglais, espagnol et allemand pour chaque point de
+  grammaire des cours, et conjugaison et accords du participe en français. Chaque piège est expliqué ; les phrases où
+  un piège serait admis dans l'usage (familier ou régional) ont été écartées.
+- **Exercices calculés** (`generators/plus-*.ts`) : 128 nouveaux générateurs en mathématiques (du programme de calcul
+  de 6e à l'arithmétique de maths expertes), en physique-chimie, en enseignement scientifique, en SNT, en NSI et en SI,
+  avec choix de courbes et tableaux de données.
+- **Faits ajoutés** (`facts/complements.ts`) : géographie, HGGSP, EMC, philosophie, Antiquité (vie quotidienne,
+  Méditerranée, cité, sagesses antiques…), méthode en français (écrit, oral, brevet) et humanités (HLP).
+- **Écrans** : l'entraînement prépare cinq séries par chapitre et affiche « série 2 sur 5 » ; le cours propose le
+  chapitre précédent et le suivant ; les choix de courbe sont jouables dans l'entraînement.
+- **Tests** : un générateur doit produire au moins huit exercices différents, ou déclarer sa liste fermée
+  (`capacity`) ; deux exercices qui ne diffèrent que par l'ordre des choix comptent pour un seul.
+
 ## Banque de cours et d'exercices
 
 Un cours pour chacune des 555 unités du programme et un entraînement à volonté, vérifié par le code
